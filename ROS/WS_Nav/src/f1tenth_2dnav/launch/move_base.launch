@@ -21,6 +21,7 @@
   <arg name="map_size" default="2048"/>
 
   <arg name="map_name" default="living3.yaml"/>
+  <arg name="speed" default="3.0"/>
 
 <!-- Uncomment in case of rosbag -->
   <!--<param name="/use_sim_time" value="true"/>-->
@@ -134,6 +135,6 @@
   </node>
   
   <node pkg="f1tenth_2dnav" type="cmd_vel_to_drive_param.py" name="cmd_vel_to_drive_param" output="screen">
-    <param name="speed" value="3.0"/>
+    <param name="speed" value="$(arg speed)"/>
   </node>
 </launch>
