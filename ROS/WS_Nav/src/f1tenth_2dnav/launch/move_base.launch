@@ -2,6 +2,8 @@
 
 <launch>
 
+  <param name="/use_sim_time" value="true"/>
+
 <!-- Argument names for amcl parameters-->
   <arg name="use_map_topic"   default="true"/>
   <arg name="initial_pose_x"  default="0.0"/>
@@ -17,7 +19,7 @@
   <arg name="odom_frame" default="odom_frame"/>
   <arg name="pub_map_odom_transform" default="false"/>
   <arg name="scan_subscriber_queue_size" default="5"/>
-  <arg name="scan_topic" default="scan"/>
+  <arg name="scan_topic" default="updatedLaser"/>
   <arg name="map_size" default="2048"/>
 
   <arg name="map_name" default="living3.yaml"/>
@@ -63,7 +65,7 @@
       <param name="advertise_map_service" value="false" />
     
       <param name="scan_subscriber_queue_size" value="5"/>
-      <param name="scan_topic" value="scan"/>
+      <param name="scan_topic" value="$(arg scan_topic)"/>
       <param name="pub_map_scanmatch_transform" value="false" />
       <param name="tf_map_scanmatch_transform_frame_name" value="scanmatcher_frame" />
   </node>
@@ -124,7 +126,8 @@
    
     <param name="controller_frequency" value="15"/>
     <!--<param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />-->
-
+    <!--<param name="base_global_planner" value="global_planner/GlobalPlanner"/>
+    <param name="global_planner/use_dijkstra" value="false"/>-->
     <!-- External parameters of move_base -->
 
     <rosparam file="$(find f1tenth_2dnav)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
