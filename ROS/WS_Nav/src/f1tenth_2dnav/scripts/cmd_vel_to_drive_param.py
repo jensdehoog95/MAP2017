@@ -25,13 +25,23 @@ def cmd_callback(data):
   steering = convert_trans_rot_vel_to_steering_angle(v, data.angular.z, wheelbase)
   
   throttle = 0.0
-  throttle_temp = v / 0.45 * 100
+  throttle_temp = v / 0.45 * (speed - 1) + 1 # If speed = 4 :: 0->4 becomes 1->4
 
-  if throttle_temp >= 50:
-    throttle = speed
-  else:
+  if v <= 0.1:
     throttle = 0.0
-  
+  else:
+    throttle = throttle_temp
+
+ #  if throttle_temp >= 50:
+ #    throttle = speed
+ #  else:
+ #    throttle = 0.0
+ 
+#  if throttle_temp < 1.0:
+#    throttle = 0.0
+#  else:
+#    throttle = throttle_temp
+ 
   steering = steering * -100.0
 
   if steering > 100.0:
