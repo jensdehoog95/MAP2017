@@ -7,4 +7,6 @@
 # new environment variables
 
 # modified environment variables
+export PKG_CONFIG_PATH="/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD="/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/build"
+export PYTHONPATH="/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/devel/lib/python2.7/dist-packages:$PYTHONPATH"

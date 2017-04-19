@@ -3,6 +3,6 @@ prefix=/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/devel
 Name: race
 Description: Description of race
 Version: 0.0.0
-Cflags: 
+Cflags: -I/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/devel/include
 Libs: -L/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/devel/lib 
-Requires: 
+Requires: message_runtime

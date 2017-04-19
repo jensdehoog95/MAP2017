@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(race_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT " " STREQUAL " ")
+if(NOT "/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/devel/include " STREQUAL " ")
   set(race_INCLUDE_DIRS "")
-  set(_include_dirs "")
+  set(_include_dirs "/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/devel/include")
   foreach(idir ${_include_dirs})
     if(IS_ABSOLUTE ${idir} AND IS_DIRECTORY ${idir})
       set(include ${idir})
@@ -145,7 +145,7 @@ foreach(library ${libraries})
   endif()
 endforeach()
 
-set(race_EXPORTED_TARGETS "")
+set(race_EXPORTED_TARGETS "race_generate_messages_cpp;race_generate_messages_eus;race_generate_messages_lisp;race_generate_messages_nodejs;race_generate_messages_py")
 # create dummy targets for exported code generation targets to make life of users easier
 foreach(t ${race_EXPORTED_TARGETS})
   if(NOT TARGET ${t})
@@ -153,7 +153,7 @@ foreach(t ${race_EXPORTED_TARGETS})
   endif()
 endforeach()
 
-set(depends "")
+set(depends "message_runtime")
 foreach(depend ${depends})
   string(REPLACE " " ";" depend_list ${depend})
   # the package name of the dependency must be kept in a unique variable so that it is not overwritten in recursive calls
@@ -182,7 +182,7 @@ foreach(depend ${depends})
   list(APPEND race_EXPORTED_TARGETS ${${race_dep}_EXPORTED_TARGETS})
 endforeach()
 
-set(pkg_cfg_extras "")
+set(pkg_cfg_extras "race-msg-extras.cmake")
 foreach(extra ${pkg_cfg_extras})
   if(NOT IS_ABSOLUTE ${extra})
     set(extra ${race_DIR}/${extra})
