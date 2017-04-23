@@ -1,0 +1,8 @@
+prefix=/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Nav/devel
+
+Name: f1tenth_2dnav
+Description: Description of f1tenth_2dnav
+Version: 0.0.0
+Cflags: 
+Libs: -L/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Nav/devel/lib 
+Requires: 
