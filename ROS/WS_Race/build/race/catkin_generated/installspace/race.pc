@@ -1,8 +1,0 @@
-prefix=/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/install
-
-Name: race
-Description: Description of race
-Version: 0.0.0
-Cflags: -I/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/install/include
-Libs: -L/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/install/lib 
-Requires: message_runtime
