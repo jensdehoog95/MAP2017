@@ -1,2 +1,2 @@
-race
+lidarspoof:race
 -DCATKIN_DEVEL_PREFIX=/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/devel -DCMAKE_INSTALL_PREFIX=/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/install -G Unix Makefiles

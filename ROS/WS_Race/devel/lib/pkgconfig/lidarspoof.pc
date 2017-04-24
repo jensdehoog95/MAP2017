@@ -1,0 +1,8 @@
+prefix=/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/devel
+
+Name: lidarspoof
+Description: Description of lidarspoof
+Version: 0.0.0
+Cflags: 
+Libs: -L/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/devel/lib 
+Requires: 

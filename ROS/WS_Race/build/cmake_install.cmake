@@ -117,6 +117,7 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/build/gtest/cmake_install.cmake")
+  include("/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/build/lidarspoof/cmake_install.cmake")
   include("/media/psf/Home/Documents/Git/MAP2017/ROS/WS_Race/build/race/cmake_install.cmake")
 
 endif()
