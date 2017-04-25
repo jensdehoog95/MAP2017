@@ -1,14 +1,21 @@
 <?xml version="1.0"?> 
 
 <launch>
-  <master auto="start"/>
+  <!-- <master auto="start"/> -->
 
   <!-- Run the map server -->
-  <node name="map_server" pkg="map_server" type="map_server" args="/home/jens/Documents/Rosbags/Team_Hector/German/map_Team_Hector_German.pgm 0.050000"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="/home/jens/Documents/Rosbags/School/V314.pgm 0.050000"/>
 
   <!--- Run AMCL -->
+  
   <include file="$(find amcl)/examples/amcl_omni.launch" />
-
+  
+  <!--
+  <node pkg="amcl" type="amcl" name="amcl">
+	<param name="use_map_topic" value="true"/>
+	<param name="scan" value="scan"/>
+  </node>
+  -->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <rosparam file="$(find f1tenth_2dnav)/costmap_common_params.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find f1tenth_2dnav)/costmap_common_params.yaml" command="load" ns="local_costmap" />
