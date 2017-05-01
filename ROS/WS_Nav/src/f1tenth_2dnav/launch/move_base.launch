@@ -4,7 +4,7 @@
   <!-- <master auto="start"/> -->
 
   <!-- Run the map server -->
-  <node name="map_server" pkg="map_server" type="map_server" args="$(find f1tenth_2dnav)/maps/living3.yaml"/>
+  <!--<node name="map_server" pkg="map_server" type="map_server" args="$(find f1tenth_2dnav)/maps/living3.yaml"/>-->
   <!--<node name="map_server" pkg="map_server" type="map_server" args="/home/jens/living1.yaml"/>-->
 
   <!--- Run AMCL -->
