@@ -3,3 +3,4 @@ ROS/WS_Nav/build
 ROS/WS_Race/build
 ROS/WS_Nav/src/CMakeLists.txt
 ROS/WS_Nav/src/f1tenth_2dnav/.catkin_workspace
+ROS/WS_Nav/build_OLD
