@@ -132,5 +132,8 @@
     <rosparam file="$(find f1tenth_2dnav)/config/global_costmap_params.yaml" command="load" />
     <rosparam file="$(find f1tenth_2dnav)/config/base_local_planner_params.yaml" command="load" />
   </node>
-
+  
+  <node pkg="f1tenth_2dnav" type="cmd_vel_to_drive_param.py" name="cmd_vel_to_drive_param" output="screen">
+    <param name="speed" value="3.0"/>
+  </node>
 </launch>
