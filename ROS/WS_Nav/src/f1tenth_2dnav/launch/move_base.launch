@@ -121,6 +121,7 @@
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <!-- Internal parameters of move_base -->
     <param name="controller_frequency" value="15"/>
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
 
     <!-- External parameters of move_base -->
     <rosparam file="$(find f1tenth_2dnav)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
