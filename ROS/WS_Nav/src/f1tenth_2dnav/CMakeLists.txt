@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   sensor_msgs
   geometry_msgs
+  race
   tf
 )
 
@@ -74,8 +75,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
  generate_messages(
    DEPENDENCIES
-   #std_msgs
+   std_msgs
    sensor_msgs
+   race
+   geometry_msgs
  )
 
 ################################################
@@ -110,7 +113,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES f1tenth_2dnav
-  CATKIN_DEPENDS move_base roscpp rospy std_msgs sensor_msgs geometry_msgs
+  CATKIN_DEPENDS move_base roscpp rospy std_msgs sensor_msgs geometry_msgs race
 #  DEPENDS system_lib
 )
 
