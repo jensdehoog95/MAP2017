@@ -435,6 +435,15 @@ The racecar was built using the online tutorials provided by the organisation, f
 
 %Het systeem is ge\"{e}volueerd naar het systeem met de tellers en ticks. Ook dit systeem zal in beperkte mate uitgelegd worden.
 
+First, the car cannot drive slowly with the current configuration, which is a challenge when debugging and testing software on the NVIDIA Jetson. Therefore, a solution has to be found. 
+
+\subsubsection{Background}The Teensy microcontroller provides the signals for the steering servo and the Electronic Speed Control or ESC. These signals are independent square waves with a particular duty cycle, which ranges from 10\% to 20\% with 15\% as neutral value. When applying the neutral signals on both ESC and steering servo, the car does not move. The duty cycle of 10\% corresponds to steering to the left or driving backwards at full speed, whereas a value of 20\% corresponds to steering right or driving forward at maximum speed.
+
+The numeric values used in the code for generating the PWM-signals are represented by a 16-bit integer. Thus, a duty cycle of 10\% accords to $\pm 6554$ and 20\% corresponds with $\pm 13108$. One can find that the matching value of 15\% is $\pm 9831$.
+
+\subsubsection{Implementation}
+
+
 \subsection{Driving at constant speed}
 Het is een handigheid om op een hoger abstractieniveau "Ik wil 5km/u rijden" te kunnen zeggen. Dit komt vooral van pas bij de artificiële intelligentie. Daarom moet er een systeem gebouwd worden dat het rijden tegen constante snelheid voorziet. Dat systeem wordt in dit deel uitgelegd. De lezer ontdekt welke technieken ik heb geprobeerd en welke uiteindelijk gekozen is.
 
