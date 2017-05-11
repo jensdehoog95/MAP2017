@@ -441,7 +441,11 @@ First, the car cannot drive slowly with the current configuration, which is a ch
 
 The numeric values used in the code for generating the PWM-signals are represented by a 16-bit integer. Thus, a duty cycle of 10\% accords to $\pm 6554$ and 20\% corresponds with $\pm 13108$. One can find that the matching value of 15\% is $\pm 9831$.
 
-\subsubsection{Implementation}
+\subsubsection{Problem}A problem arises when the ESC-signal has a duty cycle which is a fraction higher than the neutral value. The motor does not drive instantly. Only at a particular numeric value of 10120 or at a duty cycle of 15.44189\%, the car starts driving at walking speed. This speed is too fast when 
+developing and debugging software. Thus, a certain deadzone exists between duty cycles 15\% and 15.44189\% which cannot be filled in by the hardware components. A software approach is needed in order to drive more slowly.
+
+\subsubsection{Solution} The general approach is to modulate the ESC-signal. By turning the ESC on and off frequently, 
+%The first approach was to modulate the ESC-signal with another PWM-signal. A square wave with a variable duty cycle would be generated, which would switch 
 
 
 \subsection{Driving at constant speed}
