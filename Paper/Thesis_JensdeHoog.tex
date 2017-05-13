@@ -443,12 +443,16 @@ The numeric values used in the code for generating the PWM-signals are represent
 
 \subsubsection{Problem}A problem arises when the ESC-signal has a duty cycle which is a fraction higher than the neutral value. The motor does not drive instantly. Only at a particular numeric value of 10120 or at a duty cycle of 15.44189\%, the car starts driving at walking speed. Though, this speed is too fast when developing and debugging software. Hence, a certain deadzone exists between duty cycles 15\% and 15.44189\% which cannot be filled in by the hardware components. A software approach is needed in order to drive more slowly.
 
-\subsubsection{Solution} The general approach is to modulate the ESC-signal. More specifically, by switching the ESC on and off at a particular frequency, the speed can be regulated. 
+\subsubsection{Solution} The general approach is to modulate the ESC-signal. More specifically, by switching the ESC on and off at a particular frequency, the speed can be regulated. The switching signal can be compared with a gate which allows the motorsignal to pass through.
 
-The first concept dealt with a PWM-signal which would modulate the ESC-signal. The motor controller was turned on and off using the generated square wave. By varying the duty cycle of that wave, the active time of the ESC varied with it.
+The first concept dealt with a PWM-signal which would modulate the ESC-controlsignal. The motor controller was turned on and off using the generated square wave. By varying the duty cycle of that wave, the active time of the ESC varied with it.
 %The generated square wave represented the switching behaviour and by varying the duty cycle of that square wave, the active time of the ESC varies with it. %%% Nakijken %%% 
 This approach was implemented by using the built-in timers of the Teensy development board.
-Paul Stoffregen built a library which carries out the timer functions. This library is a fork of the original library for Arduino and implements multiple optimisations, along with support for more hardware configurations.
+Paul Stoffregen built a library which carries out the timer functions. This library is a fork of the original library for Arduino and implements multiple optimisations, along with support for more hardware configurations. 
+
+%% Actual implementation toevoegen %%
+
+Although this solution should work in theory, it appeared to be more difficult in practice because of limitations of the hardware components. First, the ESC does not handle the motorsignal, which is switched by the gate, very well. The controller does not accept the signal at a high switching frequency. Also, the Teensy board cannot generate signals at a low switching rate. 
 %%% NAKIJKEN %%%
 
 
