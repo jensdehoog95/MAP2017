@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
+import sys
 import rospy
-# from std_msgs.msg import Float32
+from std_msgs.msg import Float32
 from race.msg import drive_param
 
 # pub = rospy.Publisher('speed', Float32, queue_size=10)
@@ -14,14 +15,15 @@ speedReached = False
 def callback(data):
     global speed, speedReached, steer, pub
     measuredRPM = data.data
+    print("WantedRPM: {}".format(wantedRPM))
+    print("MeasuredRPM: {}".format(measuredRPM))
+    print("Speed: {}".format(speed))
 
-    if wantedRPM - threshold > measuredRPM:
-        speed = 9.0
-        steer = -30
+    if wantedRPM - threshold_down > measuredRPM:
+        speed = 8.9
         rospy.loginfo("Speed up!")
-    elif wantedRPM + threshold < measuredRPM:
+    elif wantedRPM + threshold_up < measuredRPM:
         speed = 0.0
-        steer = 30
         rospy.loginfo("Speed neutral!")
 
     msg = drive_param()
@@ -50,10 +52,16 @@ def callback(data):
 
 if __name__ == '__main__':
     rospy.init_node('SpeedControl', anonymous=True)
-    # vel = input("What speed do you want to reach (km/h): ")
-    vel = rospy.get_param('~velocity', 0.0)
-    threshold = rospy.get_param('~threshold', 0.0)
+    if len(sys.argv) < 4:
+        print("usage: speedControlHysteresis.py velocity threshold_up threshold_down")
+    else:
+        vel = float(sys.argv[1])
+        threshold_up = float(sys.argv[2])
+        threshold_down = float(sys.argv[3])
+        # vel = input("What speed do you want to reach (km/h): ")
+        # vel = rospy.get_param('~velocity', 0.0)
+        # threshold = rospy.get_param('~threshold', 0.0)
 
-    wantedRPM = (vel / 3.6) * 0.1 / 0.297 * 37 / 13
-    rospy.Subscriber('RPMCounter', Float32, callback)
-    rospy.spin()
+        wantedRPM = (vel / 3.6) * 0.1 / 0.297 * 37 / 13
+        rospy.Subscriber('RPMCounter', Float32, callback)
+        rospy.spin()
