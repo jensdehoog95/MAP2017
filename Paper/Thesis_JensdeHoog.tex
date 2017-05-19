@@ -385,7 +385,7 @@
 		Peter Hellinckx\IEEEauthorrefmark{1}\IEEEauthorrefmark{4}\\
 	jens.dehoog@student.uantwerpen.be, thomas.huybrechts@uantwerpen.be, peter.hellinckx@uantwerpen.be}
 	\\\IEEEauthorblockA{
-	    \IEEEauthorrefmark{1}Department of Applied Engineering, Electronics-ICT, University of Antwerp, Belgium
+	    \IEEEauthorrefmark{4}Department of Applied Engineering, Electronics-ICT, University of Antwerp, Belgium
 	}
 	\IEEEauthorblockA{
 	    \IEEEauthorrefmark{4}IDLab, Department of Applied Engineering, University of Antwerp - iMinds, Belgium
@@ -443,15 +443,18 @@ In dit deel vertel ik over het traag rijden en het rijden tegen constante snelhe
 The algorithms can 
 
 \subsection{Fixed path}
-\begin{description}
-\item[Literature] \hfill \\ In dit deel leg ik verschillende globale algoritmes naast elkaar. Ook vertel ik dat de Navigation Stack aanwezig is in ROS en dat deze daa
+%\begin{description}
+%\item[Literature] \hfill \\ In dit deel leg ik verschillende globale algoritmes naast elkaar. Ook vertel ik dat de Navigation Stack aanwezig is in ROS en dat deze daa
 
-\item[Navigation Stack] \hfill \\ Hierin vertel ik dat er een implementatie bestaat in het ROS-framework, hoe deze is opgebouwd (subnodes, lokale / globale planner, AMCL, \ldots), wat er is foutgelopen bij het opzetten van de Stack en wat de oplossingen daarvoor waren. Ook vertelt dit deel over het feit dat de Stack in principe gemaakt is voor een differenti\"{e}le of holonomische sturing. Oplossingen worden daarvoor aangereikt, samen met de uitleg waarom die oplossingen goed/slecht waren.
-Het ‘foutgelopen+oplossingen’-deel is beknopt. De oplossingen worden aangereikt in een korte maar duidelijke manier. 
+%\item[Navigation Stack] \hfill \\ Hierin vertel ik dat er een implementatie bestaat in het ROS-framework, hoe deze is opgebouwd (subnodes, lokale / globale planner, AMCL, \ldots), wat er is foutgelopen bij het opzetten van de Stack en wat de oplossingen daarvoor waren. Ook vertelt dit deel over het feit dat de Stack in principe gemaakt is voor een differenti\"{e}le of holonomische sturing. Oplossingen worden daarvoor aangereikt, samen met de uitleg waarom die oplossingen goed/slecht waren.
+%Het ‘foutgelopen+oplossingen’-deel is beknopt. De oplossingen worden aangereikt in een korte maar duidelijke manier. 
 
-\item[Resultaten] \hfill \\ Dit deel vertelt over het verloop van het navigeren d.m.v. de Stack. Er komen foto’s aan bod van het uitgestippelde pad, de auto die tegen de muur zit, \ldots
+%\item[Resultaten] \hfill \\ Dit deel vertelt over het verloop van het navigeren d.m.v. de Stack. Er komen foto’s aan bod van het uitgestippelde pad, de auto die tegen de muur zit, \ldots
 
-\end{description}
+%\end{description}
+\textit{Literature} fefjeajfejfe
+
+\textit{Navigation Stack} The navigation stack is a concept which calculates a path and velocity commands based on given information, such as odometry and data from rangefinders. An implementation is found in the ROS-framework and is realised using multiple nodes. One of these nodes is the 'move\textunderscore base'-node which has a major role in the system. Other nodes provide the odometry and transformation data, process the commands in order to drive the car and the 
 
 \subsection{Waypoints}
 \begin{description}
