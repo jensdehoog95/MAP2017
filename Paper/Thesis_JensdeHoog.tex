@@ -454,7 +454,7 @@ The algorithms can
 %\end{description}
 \textit{Literature} fefjeajfejfe
 
-\textit{Navigation Stack} The navigation stack is a concept which calculates a path and velocity commands based on given information, such as odometry and data from rangefinders. An implementation is found in the ROS-framework and is realised using multiple nodes. One of these nodes is the 'move\textunderscore base'-node which has a major role in the system. Other nodes provide the odometry and transformation data, process the commands in order to drive the car and the 
+\textit{Navigation Stack} The navigation stack is an abstract concept which calculates a path and velocity commands based on given information, such as odometry and data from rangefinders. An implementation is found in the ROS-framework and is realised using multiple nodes. One of these nodes is the move\textunderscore base-node which has a major role in the system. This node provides the global and local costmaps which are used to calculate a path from the startlocation to the destination. Other nodes provide the inputs and outputs of the \textit{move\textunderscore base}-node. The needed inputs are the odometry data, transformations, localisation information and the data from a certain rangefinder. For this research, a LiDAR-sensor (Light Detection and Ranging) served as rangefinder. The commands by which the car would drive are the generated outputs of the center node.
 
 \subsection{Waypoints}
 \begin{description}
