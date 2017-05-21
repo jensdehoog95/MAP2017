@@ -456,18 +456,29 @@ The algorithms can
 %\item[Resultaten] \hfill \\ Dit deel vertelt over het verloop van het navigeren d.m.v. de Stack. Er komen foto’s aan bod van het uitgestippelde pad, de auto die tegen de muur zit, \ldots
 
 %\end{description}
-\textit{Literature} fefjeajfejfe
+\paragraph{Literature} fefjeajfejfe
 
-\textit{Navigation Stack} The navigation stack is an abstract concept which calculates a path and velocity commands based on given information, such as odometry and data from rangefinders. An implementation is found in the ROS-framework and is realised using multiple nodes. One of these nodes is the move\textunderscore base-node which has a major role in the system. This node provides the global and local costmaps which are used to calculate a path from the startlocation to the destination. Other nodes provide the inputs and outputs of the \textit{move\textunderscore base}-node. The needed inputs are the odometry data, transformations, localisation information, the map on which the navigation would take place and the data from a certain rangefinder. For this research, a LiDAR-sensor (Light Detection and Ranging) served as rangefinder. The commands by which the car would drive are the generated outputs of the central navigation node. Figure \ref{fig:navstack1} displays an overall overview of the different nodes in the navigation stack
+%\textit{Navigation Stack} 
+\paragraph{Navigation Stack}
+The navigation stack is an abstract concept which calculates a path and velocity commands based on given information, such as odometry and data from rangefinders. An implementation is found in the ROS-framework and is realised using multiple nodes. One of these nodes is the \emph{move\textunderscore base}-node which has a major role in the system. This node provides the linkage between the global and local costmaps which are used to calculate a path from the start location to the destination. Other nodes outside the package provide the inputs and outputs of the \emph{move\textunderscore base}-node. The needed inputs are the odometry data, transformations, localisation information, the map on which the navigation would take place and the data from a certain rangefinder. For this research, a LiDAR-sensor (Light Detection and Ranging) served as rangefinder. The commands by which the car would drive are the generated outputs of the central navigation node. Figure \ref{fig:navstack_global} displays an overall overview of the different nodes in the navigation stack
 
-Inside the \textit{move\textunderscore base}, multiple calculations take place in order to drive the car. First, the node produces a global costmap which is used to plan the route from start to destination. This is done by a global planner.
+Inside the \textit{move\textunderscore base}-node, multiple calculations take place in order to drive the car. First, a plugin called \emph{global\textunderscore costmap} produces a costmap which is used to plan the route from start to destination. This is done by the plugin \emph{global\textunderscore planner}. The default implementation of this planner is \emph{navfn}, but can be replaced by the more advanced \emph{global\textunderscore planner}. For this research, ***Insert global planner*** is used because of ***insert reasons***. The central node also produces a local costmap which is used by the local planner. By using this particular costmap and planner, the navigation stack can plan a route around an unexpected obstacle that is not present on the map. Additionally, the \emph{move\textunderscore base}-node includes a recovery plugin which plans a recovery route when the car is stuck and thus unable to follow the planned route.
 
-\begin{figure}
-    \includegraphics[width=\columnwidth]{navstack1}
+Figure \ref{fig:navstack_global} shows an abstract overview of the navigation stack with its nodes and plugins. 
+
+\begin{figure}[!t]
+    \includegraphics[width=\columnwidth]{navstack3}
     \centering
     \caption{Overview of the navigation stack with its input and output nodes.}
-    \label{fig:navstack1}
+    \label{fig:navstack_global}
 \end{figure}
+
+%\begin{figure}[!t]
+%    \includegraphics[width=\columnwidth]{navstack_movebase}
+%    \centering
+%    \caption{Overview of the navigation stack with its input and output nodes.}
+%    \label{fig:navstack_global}
+%\end{figure}
 
 \subsection{Waypoints}
 \begin{description}
@@ -496,7 +507,7 @@ De hierboven voorgelegde approaches worden met elkaar vergeleken en er worden ve
 De conclusie wordt gemaakt.
 
 \section{Further Research}
-In dit deel wordt kort besproken wat er allemaal nog gedaan kan worden van research. Er kan bijvoorbeeld gekeken naar worden optimalisaties voor de Navigation Stack en meer specifiek voor Ackermannsteering. Ook kan er gekeken worden naar betere herkenning van hoeken en inhammen voor het tweede algoritme. Als laatste zouden er betere optimalisatie-algoritmes onderzocht kunnen worden, en met of zonder neural network.
+In dit deel wordt kort besproken wat er allemaal nog gedaan kan worden van research. Er kan bijvoorbeeld gekeken naar worden optimalisaties voor de Navigation Stack en meer specifiek voor Ackermannsteering. Ook kan er gekeken worden naar betere herkenning van hoeken en inhammen voor het tweede algoritme. Als laatste zouden er betere optimalisatie-algoritmes onderzocht kunnen worden, en met of zonder neural network. 
 % trigger a \newpage just before the given reference
 % number - used to balance the columns on the last page
 % adjust value as needed - may need to be readjusted if
