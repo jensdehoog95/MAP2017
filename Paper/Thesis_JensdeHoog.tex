@@ -460,19 +460,35 @@ The algorithms can
 
 %\textit{Navigation Stack} 
 \paragraph{Navigation Stack}
-The navigation stack is an abstract concept which calculates a path and velocity commands based on given information, such as odometry and data from rangefinders. An implementation is found in the ROS-framework and is realised using multiple nodes. One of these nodes is the \emph{move\textunderscore base}-node which has a major role in the system. This node provides the linkage between the global and local costmaps which are used to calculate a path from the start location to the destination. Other nodes outside the package provide the inputs and outputs of the \emph{move\textunderscore base}-node. The needed inputs are the odometry data, transformations, localisation information, the map on which the navigation would take place and the data from a certain rangefinder. For this research, a LiDAR-sensor (Light Detection and Ranging) served as rangefinder. The commands by which the car would drive are the generated outputs of the central navigation node. Figure \ref{fig:navstack_global} displays an overall overview of the different nodes in the navigation stack
+The navigation stack is an abstract concept which calculates a path and velocity commands based on given information, such as odometry and data from rangefinders. An implementation is found in the ROS-framework and is realised using multiple nodes. One of these nodes is the \emph{move\textunderscore base}-node which has a major role in the system. This node provides the linkage between the global and local costmaps which are used to calculate a path from the start location to the destination. Other nodes outside the package provide the inputs and outputs of the \emph{move\textunderscore base}-node. The needed inputs are the odometry data, transformations, localisation information, the map on which the navigation would take place and the data from a certain rangefinder. For this research, a LiDAR-sensor (Light Detection and Ranging) served as rangefinder. The commands by which the car would drive are the generated outputs of the central navigation node. Figure \ref{fig:navstack_global} displays an overall overview of the different nodes in the navigation stack. \cite{Marder-Eppstein2016}
 
-Inside the \textit{move\textunderscore base}-node, multiple calculations take place in order to drive the car. First, a plugin called \emph{global\textunderscore costmap} produces a costmap which is used to plan the route from start to destination. This is done by the plugin \emph{global\textunderscore planner}. The default implementation of this planner is \emph{navfn}, but can be replaced by the more advanced \emph{global\textunderscore planner}. For this research, ***Insert global planner*** is used because of ***insert reasons***. The central node also produces a local costmap which is used by the local planner. By using this particular costmap and planner, the navigation stack can plan a route around an unexpected obstacle that is not present on the map. Additionally, the \emph{move\textunderscore base}-node includes a recovery plugin which plans a recovery route when the car is stuck and thus unable to follow the planned route.
+Inside the \textit{move\textunderscore base}-node, multiple calculations take place in order to drive the car. First, a plugin called \emph{global\textunderscore costmap} produces a costmap which is used to plan the route from start to destination. This is done by the plugin \emph{global\textunderscore planner}. The default implementation of this planner is \emph{navfn}, but can be replaced by the more advanced \emph{global\textunderscore planner}. For this research, ***Insert global planner*** is used because of ***insert reasons***. The central node also produces a local costmap which is used by the local planner. By using this particular costmap and planner, the navigation stack can plan a route around an unexpected obstacle that is not present on the map. Additionally, the \emph{move\textunderscore base}-node includes a recovery plugin which plans a recovery route when the car is stuck and thus unable to follow the planned route. \cite{Marder-Eppstein2016_2, Zheng2016}
 
-Figure \ref{fig:navstack_global} shows an abstract overview of the navigation stack with its nodes and plugins. 
+Figure \ref{fig:navstack_global} shows an abstract overview of the navigation stack with its nodes and plugins. \\
 
 \begin{figure}[!t]
     \includegraphics[width=\columnwidth]{navstack3}
     \centering
-    \caption{Overview of the navigation stack with its input and output nodes.}
+    \caption{Overview of the navigation stack with its input and output nodes, along with the plugins inside the \emph{move\textunderscore base}-node.}
     \label{fig:navstack_global}
 \end{figure}
 
+\noindent Before the car can drive by the navigation stack, one has to make sure a map of the environment is present. The map used in this research is built by using \emph{hector\textunderscore mapping}. This package is an implementation of the SLAM-concept (Simultaneous Localisation And Mapping) which only uses data from the LiDAR-sensor. Therefore, this is the most suitable implementation for our F1/10-car because of the lack of odometry data. More information about \emph{hector\textunderscore mapping} can be found in \cite{Kohlbrecher2012} and \cite{Kohlbrecher2011}. \\
+
+\noindent In order to use the \emph{move\textunderscore base}-node properly, certain precautions have to be made. First, the transformation tree has to be correct such that the laser data can be transformed to the center of the robot. To build such a tree, two \emph{tf}-nodes are started. The first node transforms the LiDAR-data to a link which connects all types of sensors to a particular point. The second node transforms the linking point to the center of the frame. Since only one sensor is present, we located the linking point to the center of the frame; thus, the second transformation is one-to-one. Though, this second transform is needed as the navigation stack needs the \emph{base\textunderscore frame}-transformation. More information about transformations can be found in \cite{Kohlbrecher2012_tf} and \cite{Woodall2015}.
+
+Second, the navigation stack needs a source of odometry data. Since the car does not feature a suitable source, we have to generate such data from the LiDAR-sensor. \emph{hector\textunderscore mapping} can provide odometry data which is derived from the laser scan. In order to use this data in the navigation stack, a particular node is needed which translates the odometry information to transformation data. The implementation of this node can be found in the \emph{f1tenth}-repository of Nischal K.N. \cite{K.N.2016}.
+
+The third and last precaution is to provide localisation data such that the robot can guess where it is located on the map. This is implemented by the \emph{Adaptive Monte Carlo Localisaton} or \emph{AMCL}. In order to generate suitable pose messages, the node also needs odometry data, along with the map, transformations and laser information. More information abount \emph{AMCL} can be found in \cite{Gerkey2016} and \cite{Thrun1999}\\
+
+Figure \ref{fig:navstack_tf} shows the transformations created by the aforementioned nodes. 
+
+\begin{figure}[!t]
+    \includegraphics[width=\columnwidth]{navstack_tf}
+    \centering
+    \caption{Created transformation frames for the navigation stack. The \emph{tf}-links between \emph{laser}, \emph{base\textunderscore link} and \emph{base\textunderscore frame} are static transforms. Next, the \emph{hector\textunderscore odom}-link is created by a node which translates the odometry of \emph{hector\textunderscore mapping}. The \emph{amcl}-transform is created by the localisation provider.}
+    \label{fig:navstack_tf}
+\end{figure}
 %\begin{figure}[!t]
 %    \includegraphics[width=\columnwidth]{navstack_movebase}
 %    \centering
