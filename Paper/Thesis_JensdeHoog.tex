@@ -456,11 +456,17 @@ The algorithms can
 %\item[Resultaten] \hfill \\ Dit deel vertelt over het verloop van het navigeren d.m.v. de Stack. Er komen foto’s aan bod van het uitgestippelde pad, de auto die tegen de muur zit, \ldots
 
 %\end{description}
-\paragraph{Literature} fefjeajfejfe
+\paragraph{Literature} Quite an amount of research has been done in planning a particular route and navigating on that route. Henson et al. \cite{Henson2008} propose an algorithm which processes waypoint instructions by calculating a route between each point. This algorithm is optimised for cars with an Ackermann-steering mechanism. Thus, if the waypoint is reached but not with the exact orientation, the car starts to manoeuvre until the positioning is correct. 
+
+Theodosis \cite{Theodosis2014} proposes multiple methods, all of which use waypoints. The checkpoints are connected with racing lines such that a car-like robot can easily navigate without impossible pivot points. 
+
+In the ROS-framework, a complete navigator package is available, which is also known as the \emph{Navigation Stack}. This concept calculates a path and velocity commands based on given information, such as odometry and data from rangefinders. A drawback of this navigator is the fact that it is created for robots with holonomic and differential steering mechanisms. Though, it is usable for car-like robots as planner implementations exist for Ackermann-steering mechanisms.
+
+For this research, the navigation stack has been implemented. It is easy to set up on the F1/10-car as the software on the car is already running a ROS-environment.
 
 %\textit{Navigation Stack} 
 \paragraph{Navigation Stack}
-The navigation stack is an abstract concept which calculates a path and velocity commands based on given information, such as odometry and data from rangefinders. An implementation is found in the ROS-framework and is realised using multiple nodes and packages. One of these nodes is the \emph{move\textunderscore base}-node, which has a major role in the system. This node provides the linkage between the global and local planning algorithms that are used to calculate a path from the start location to the destination. Other nodes outside the package provide the inputs and outputs of the \emph{move\textunderscore base}-node. The needed inputs are the odometry data, transformations, localisation information, the map on which the navigation would take place and the data from a certain rangefinder. For this research, a LiDAR-sensor (Light Detection and Ranging) served as rangefinder. The commands by which the car would drive, are the generated outputs of the central navigation node. Figure \ref{fig:navstack_global} displays an overall overview of the different nodes in the navigation stack \cite{Marder-Eppstein2016}. 
+As mentioned in the previous paragraph, the navigation stack is found An implementation is found in the ROS-framework and is realised using multiple nodes and packages. One of these nodes is the \emph{move\textunderscore base}-node, which has a major role in the system. This node provides the linkage between the global and local planning algorithms that are used to calculate a path from the start location to the destination. Other nodes outside the package provide the inputs and outputs of the \emph{move\textunderscore base}-node. The needed inputs are the odometry data, transformations, localisation information, the map on which the navigation would take place and the data from a certain rangefinder. For this research, a LiDAR-sensor (Light Detection and Ranging) served as rangefinder. The commands by which the car would drive, are the generated outputs of the central navigation node. Figure \ref{fig:navstack_global} displays an overall overview of the different nodes in the navigation stack \cite{Marder-Eppstein2016}. 
 
 Inside the \textit{move\textunderscore base}-node, multiple calculations take place in order to drive the car. First, a plugin called \emph{global\textunderscore costmap} produces a costmap which is used to plan the route from start to destination. This is done by the plugin \emph{global\textunderscore planner}. The default implementation of this planner is \emph{navfn}, but can be replaced by the more advanced \emph{global\textunderscore planner}. For this research, the more advanced planner is used because of the ability to customise multiple parameters. Additionally, the central node produces a local costmap which is used by the local planner. By using this particular costmap and planner, the navigation stack can plan a route around an unexpected obstacle that is not present on the map. In addition, the \emph{move\textunderscore base}-node includes a recovery plugin which plans a recovery route when the car is stuck and thus unable to follow the planned route.
 Figure \ref{fig:navstack_global} shows an abstract overview of the navigation stack with its nodes and plugins. \cite{Marder-Eppstein2016_2, Zheng2016}\\
@@ -478,9 +484,10 @@ Figure \ref{fig:navstack_global} shows an abstract overview of the navigation st
 
 Second, the navigation stack needs a source of odometry data. Since the car does not feature a suitable source, we have to generate such data from the LiDAR-sensor. \emph{hector\textunderscore mapping} can provide odometry data which is derived from the laser scan. In order to use this data in the navigation stack, a particular node is needed which translates the odometry information to transformation data. The implementation of this node can be found in the \emph{f1tenth}-repository of Nischal K.N. \cite{K.N.2016}.
 
-The third and last precaution is the provision of localisation data such that the robot can guess where it is located on the given map. This is implemented by the \emph{AMCL}-node (\emph{Adaptive Monte Carlo Localisation}). In order to generate a suitable pose guess, the node also needs odometry data, along with the map, transformations and LiDAR-information. More information abount \emph{AMCL} can be found in \cite{Gerkey2016} and \cite{Thrun1999}.\\
+The third precaution is the provision of localisation data such that the robot can guess where it is located on the given map. This is implemented by the \emph{AMCL}-node (\emph{Adaptive Monte Carlo Localisation}). In order to generate a suitable pose guess, the node also needs odometry data, along with the map, transformations and LiDAR-information. More information abount \emph{AMCL} can be found in \cite{Gerkey2016} and \cite{Thrun1999}.\\
 
-Figure \ref{fig:navstack_tf} shows the transformations created by the aforementioned nodes. 
+The last precaution is the translation from the velocity commands of the navigator to instructions for the motor controller. As the 
+\noindent Figure \ref{fig:navstack_tf} shows the transformations created by the aforementioned nodes. 
 
 \begin{figure}[!t]
     \includegraphics[width=\columnwidth]{navstack_tf}
@@ -490,6 +497,16 @@ Figure \ref{fig:navstack_tf} shows the transformations created by the aforementi
 \end{figure}
 
 \paragraph{Results}
+A major problem of the navigation stack is that it is not optimised for car-like robots. Instead, it is especially created for robots with holonomic or differential steering mechanisms. Therefore, the car is sometimes unable to follow the calculated path. Though, if the is drifting from its global route because of the steering mechanism, the local planner corrects the route such that the car is back on track. Also, another local planner is available for car-like robots. This planner is also known as \emph{teb\textunderscore local\textunderscore planner}. More information can be found in \cite{Rosmann2016}.
+
+\begin{figure}[!t]
+	\includegraphics[width=\columnwidth]{navstack_result}
+	\centering
+	\caption{Created transformation frames for the navigation stack. The \emph{tf}-links between \emph{laser}, \emph{base\textunderscore link} and \emph{base\textunderscore frame} are static transforms. Next, the \emph{hector\textunderscore odom}-link is created by a node which translates the odometry of \emph{hector\textunderscore mapping}. The \emph{amcl}-transform is created by the localisation provider.}
+	\label{fig:navstack_tf}
+\end{figure}
+
+The planned route is shown in figure
 
 \subsection{Waypoints}
 \begin{description}
