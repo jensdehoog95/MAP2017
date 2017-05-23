@@ -439,7 +439,7 @@ In dit deel vertel ik over het traag rijden en het rijden tegen constante snelhe
 \end{itemize}
 
 \section{Algorithms}
-\subsection{Global}
+\subsection{Global outline}
 The algorithms can 
 
 \newpage
@@ -497,16 +497,19 @@ The last precaution is the translation from the velocity commands of the navigat
 \end{figure}
 
 \paragraph{Results}
-A major problem of the navigation stack is that it is not optimised for car-like robots. Instead, it is especially created for robots with holonomic or differential steering mechanisms. Therefore, the car is sometimes unable to follow the calculated path. Though, if the is drifting from its global route because of the steering mechanism, the local planner corrects the route such that the car is back on track. Also, another local planner is available for car-like robots. This planner is also known as \emph{teb\textunderscore local\textunderscore planner}. More information can be found in \cite{Rosmann2016}.
 
 \begin{figure}[!t]
-	\includegraphics[width=\columnwidth]{navstack_result}
+	\includegraphics[width=\columnwidth]{navstack_result_1}
 	\centering
-	\caption{Created transformation frames for the navigation stack. The \emph{tf}-links between \emph{laser}, \emph{base\textunderscore link} and \emph{base\textunderscore frame} are static transforms. Next, the \emph{hector\textunderscore odom}-link is created by a node which translates the odometry of \emph{hector\textunderscore mapping}. The \emph{amcl}-transform is created by the localisation provider.}
-	\label{fig:navstack_tf}
+	\caption{a) shows the route which is planned by the navigation stack. The map is built with \emph{Hector\textunderscore mapping}. b) displays a close-up of the car moving on the route. }
+	\label{fig:navstack_result}
 \end{figure}
 
-The planned route is shown in figure
+The planned route is shown in figure \ref{fig:navstack_result}, along with a close-up of the car navigating on that path. 
+
+A major problem of the navigation stack is that it is not optimised for car-like robots. Instead, it is especially created for robots with holonomic or differential steering mechanisms. Therefore, the car is sometimes unable to follow the calculated path. Though, if the is drifting from its global route because of the steering mechanism, the local planner corrects the route such that the car is back on track. Also, another local planner is available for car-like robots. This planner is also known as \emph{teb\textunderscore local\textunderscore planner}. More information can be found in \cite{Rosmann2016}.
+
+
 
 \subsection{Waypoints}
 \begin{description}
