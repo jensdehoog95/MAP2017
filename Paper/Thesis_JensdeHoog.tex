@@ -335,6 +335,8 @@
 % Advanced table environment
 \usepackage{booktabs}
 
+\usepackage{lipsum}
+
 
 
 % *** Do not adjust lengths that control margins, column widths, etc. ***
@@ -385,7 +387,7 @@
 		Peter Hellinckx\IEEEauthorrefmark{1}\IEEEauthorrefmark{4}\\
 	jens.dehoog@student.uantwerpen.be, thomas.huybrechts@uantwerpen.be, peter.hellinckx@uantwerpen.be}
 	\\\IEEEauthorblockA{
-	    \IEEEauthorrefmark{4}Department of Applied Engineering, Electronics-ICT, University of Antwerp, Belgium
+	    \IEEEauthorrefmark{1}Faculty of Applied Engineering, Electronics-ICT, University of Antwerp, Belgium
 	}
 	\IEEEauthorblockA{
 	    \IEEEauthorrefmark{4}IDLab, Department of Applied Engineering, University of Antwerp - iMinds, Belgium
@@ -397,7 +399,7 @@
 
 \begin{abstract}
 %\boldmath
-Insert abstract of the paper.
+\lipsum[1]
 
 \end{abstract}
 % IEEEtran.cls defaults to using nonbold math in the Abstract.
@@ -426,6 +428,8 @@ Insert abstract of the paper.
 
 %*Moet nog uitgebreid worden*
 
+\lipsum[2-4]
+
 \section{**Testopstelling¨**}
 \subsection{F1/10-car}
 Ik vertel over de wagen in het algemeen en welke sensoren eropzitten. Dit gebeurt heel kort.
@@ -438,14 +442,10 @@ In dit deel vertel ik over het traag rijden en het rijden tegen constante snelhe
 \item Ik vertel kort waarom het rijden op softwareniveau (met IMU) niet werkten en hoe het met de RPM-sensor is opgelost.
 \end{itemize}
 
+\section{Previous work}
+The original intent of the F1/10-car was to develop an autonomous race car which would compete against other cars, each with other algorithms. The University of Pennsylvania \cite{f1tenth} published multiple tutorials, lessons and exercises in order to set up an F1/10-car from the very beginning. Additionally, the university proposes several algorithms which can be used to drive on a race track. Though, these algorithms are optimised for racing on fixed tracks at high speeds. 
+
 \section{Algorithms}
-\subsection{Global outline}
-The algorithms can 
-
-\newpage
-|
-\newpage
-
 \subsection{Fixed path}
 %\begin{description}
 %\item[Literature] \hfill \\ In dit deel leg ik verschillende globale algoritmes naast elkaar. Ook vertel ik dat de Navigation Stack aanwezig is in ROS en dat deze daa
