@@ -430,17 +430,29 @@
 
 
 \section{Introduction}
+These days, robotics are deployed in many applications in different domains and their popularity is still growing. Especially autonomous robots are a captivating topic due to the versatility of these machines. For example, interplanetary missions, which are almost impossible for humans, are ideal for autonomous robots. 
+%Another example are UAVs (Unmanned Aerial Vehicles), which are able to fly through dangerous environments to perform measurements, such that humans can anticipate on these perilous zones. 
+Self-driving cars are also an example. This is an enthralling topic in which the interest is also increasing. Major companies, such as Uber, Waymo and Tesla, Inc., are pushing the limits of autonomous vehicles further. The technology has even evolved so far that the car of Waymo has approximately one disengagement (an action where the driver has to take over control) in every 5,000 drived miles \cite{Mui2017}. 
+%In a smart city environment where Mobility as a Service (MaaS) is deployed, 
+Additionally, real autonomous vehicles will be very practical in smart city environments that deploy Mobility as a Service (MaaS). When using such a service, the user pays for the ride he is taking instead of paying for the car he or she had bought. The combination of MaaS and self-driving cars provides many benefits such as reducing traffic congestions and overall transportation costs \cite{Speculations}.
+
+In 2016, the university of Pennsylvania started a project known as \emph{F1/10-car} \cite{f1tenth}. This car is a scaled model of an F1-car with scaling factor 1/10. The purpose of this project is to start a competition of F1/10-cars, which involves designing, building and testing of the car. Whereas many algorithms have been developed in order to race with this car, little research has been conducted in navigation. This topic is interesting as the car can serve as test bed for real autonomous cars and MaaS-systems.
+
+Due to this lack of research, this paper implements and compares three different types of navigation algorithms. First, a fixed path is considered. I.e., the software calculates a path onto which the car will drive in order to reach the destination. The second approach are waypoints that describe the route to be driven. By navigating from point to point, the destination is reached. The last method involves an optimisation algorithm so that an optimal route can be derived from previous routes.
+
+We have organised the rest of the paper in the following way. The remainder of this paper will further discuss the related work on these algorithms and how we incoperated this knowledge in our autonomous car. In section \ref{sec:Implementations}, an elaboration for each algorithm is introduced. Section \ref{sec:TestSetup} reveals the test setup that was used in order to obtain the results. Section \ref{sec:Results} presents the obtained results for each method. In section \ref{sec:ComparativeStudy} a comparison of the three methodologies is presented. Finally, section \ref{sec:FurtherResearch} suggests topics for further research and \ref{sec:Conclusion} forms the conclusion of this paper.
+%Additionally, the interest in self-driving cars is also increasing as major companies, such as Tesla, Inc., Google and Uber, are pushing the limits of autonomous vehicles further. 
 
 \section{Related work}
-\subsection{Fixed path}
-Before navigation on a fixed path takes place, a the provision of a map and localisation on that map is needed. 
-In the state-of-the-art, considerable research has been done in planning a particular route and navigating on that route. However, a map and localisation information have to be provided in the first place. To tackle this problem, multiple approaches have been introduced. One of these approaches is the \emph{SLAM}-methodology (Simultaneous Localisation And Mapping). \emph{Hector\textunderscore SLAM} is an implementation and provides information based on laser data from a LiDAR-sensor (Light Detection And Ranging)\cite{Kohlbrecher2011, Kohlbrecher2012}. Another approach is \emph{gmapping}, which solves the SLAM-problem by laser data and odometry \cite{Grisetti2007}. Since the F1/10-car does not provide odometry data, this approach is not suitable for our research.
+\subsection{Fixed Path}
+%Before navigation on a fixed path takes place, the provision of a map and localisation on that map is needed. 
+In the state-of-the-art, considerable research has been conducted in planning and navigating on a particular route. However, a map and localisation information have to be provided in the first place. To tackle this problem, multiple approaches have been introduced. One of these approaches is the \emph{SLAM}-methodology (Simultaneous Localisation And Mapping). This method provides a solution for building a map and localising on that map at the same time, which is a challenge in robotics. \emph{Hector\textunderscore SLAM} is an implementation and provides information based on laser data from a LiDAR-sensor (Light Detection And Ranging)\cite{Kohlbrecher2011, Kohlbrecher2012}. Another approach is \emph{gmapping}, which solves the SLAM-challenge by combining laser data and odometry \cite{Grisetti2007}. Since the F1/10-car does not provide odometry data, this approach is not suitable for our research.
 
-Henson et al. \cite{Henson2008} propose an algorithm which processes waypoint instructions by calculating a route between each point. This algorithm is optimised for cars with an Ackermann-steering mechanism. Thus, if the waypoint is reached but without the requested orientation, the car starts to manoeuvre until the positioning is correct. The Ackermann-principle makes sure that, when turning the wheels of a car, the outer wheel turns less sharply than the inner wheel. This results in both wheels turning around the same pivot point, thus minimising the risk of slipping sideways. \cite{King-Hele2002}. 
+Henson et al. \cite{Henson2008} propose an algorithm which processes waypoint instructions by calculating a route between each point. This algorithm is optimised for cars with an Ackermann-steering mechanism. Thus, if the waypoint is reached but without the requested orientation, the car starts to manoeuvre until its position is correct. The Ackermann-principle guarantees that the outer wheel turns less sharply than the inner wheel when turning the wheels of a car. This results in both wheels turning around the same pivot point, thus minimising the risk of slipping sideways. \cite{King-Hele2002}. 
 
 Theodosis suggests multiple methods, all of which use waypoints \cite{Theodosis2014}. These checkpoints are connected with racing lines such that a car-like robot can easily navigate without impossible pivot points. Racing lines are paths which provide the highest average speed when driving by combining maximal acceleration and grip on the road while minimising the travelled distance. \cite{Macfarland2015}.
 
-In the ROS-framework, a complete navigator package is available, which is also known as the \emph{Navigation Stack} \cite{Marder-Eppstein2016}\cite{Marder-Eppstein2017}. This module calculates a path and velocity commands based on given information, such as odometry and data from rangefinders. A major drawback of this navigator is the fact that it is created for robots with holonomic and differential steering mechanisms. Holonomic robots are able to move in certain degrees of freedom (\emph{DoF}), while having an equal or larger number of controllable DoF \cite{Mariappan2009}. In this way, these robots are able to move in any direction without repositioning the wheels. Differential steering mechanisms mostly consists of two wheels which have the same speed when moving forward, but different speeds when changing direction \cite{Saidonr2011}. 
+In the ROS-framework (Robotic Operation System), a complete navigator package is available, which is also known as the \emph{Navigation Stack} \cite{Marder-Eppstein2016}\cite{Marder-Eppstein2017}. This module calculates a path and velocity commands based on given information, such as odometry and data from rangefinders. A major drawback of this navigator is the fact that it is created for robots with holonomic and differential steering mechanisms. Holonomic robots are able to move in certain degrees of freedom (\emph{DoF}), while having an equal or larger number of controllable DoF \cite{Mariappan2009}. In this way, these robots are able to move in any direction without repositioning the wheels. Differential steering mechanisms mostly consists of two wheels which have the same speed when moving forward, but different speeds when changing direction \cite{Saidonr2011}. 
 %If a speed difference occurs between the two wheels, the direction of the robot changes \cite{Saidonr2011}. 
 Though, it is usable for car-like robots as there exist implementations for Ackermann-steering mechanisms.
 
@@ -453,16 +465,24 @@ The aforementioned methodologies provide solutions for navigation with pedestria
 %Due to the lack of research for this problem, no acceptable solutions are available yet. Therefore, this paper suggests a new methodology to tackle this problem.
 
 \subsection{Optimisation Algorithm}
+Although optimisation problems are challenging for both humans and computers, they are able to provide very useful data. 
+For example, finding a path in a complex environment is one of the capabilities of an optimisation algorithm. These path planning problems are also solvable by algorithms such as Dijkstra or A*. However, they are very time consuming in comparison with optimisation systems \cite{Dang2014}.
 
+Several path finding algorithms have been developed over the past few years. First, Garcia et al. propose an algorithm based on \emph{ant colony optimisation}\cite{Garcia2009}. This type of optimisation relies on the behaviour of real ants, which spread a pheromone when walking on a path in search of food \cite{Dorigo2006}. As the pheromones evaporate after a period of time, a shorter path contains more chemical substances. As a result, the path with the most pheromones is the shortest path to the destination. Garcia et al. considers such an ant as a robot, searching for its destination. By assigning costs to each path, which are based on effort and distance, and iterating over the algorithm, the shortest path is found.
+
+Saska et al. suggest a path planning methodology using \emph{particle swarm optimisation} (\emph{PSO}) and Ferguson Splines \cite{Saska2006}. In PSO, the particles in this algorithm are suggested solutions. Each particle knows its local best position, which affects the movement of that particle. The best position in the search space also affects this movement. This combination results in particles moving to a position which represents the global minimum, thus the most optimised point. A path containing these Ferguson Splines is considered as a smooth path, which is feasible for a car-like robot.
+
+%Finally, Saska et al. \cite{Saska2006} suggest a path planning methodology using PSO and Ferguson Splines. A path containing these splines is considered as a smooth path, which is feasible for a car-like robot.
 \section{Implementations}
-\subsection{Fixed path}
+\label{sec:Implementations}
+\subsection{Fixed Path}
 For this research, the navigation stack has been implemented as the software on the car is already running a ROS-environment.
 
-Before the car is able to drive using the navigation stack, one has to make sure a map of the environment is present. The map used in this research is built by using \emph{hector\textunderscore mapping}. This package is a part of the \emph{hector\textunderscore SLAM}-implementation, which is mentioned in the previous section. As the car lacks a source of odometry data, another implementation such as \emph{gmapping} is not suitable.
+Before the car is able to drive using the navigation stack, one has to provide a map of the environment. The map used in this research is built by using \emph{hector\textunderscore mapping}. This package is a part of the \emph{hector\textunderscore SLAM}-implementation, which is mentioned in the previous section. As the car lacks a source of odometry data, another implementation such as \emph{gmapping} is not suitable.
 %Therefore, this is the most suitable implementation for our F1/10-car due to the lack of odometry data. An elaborated discussion on \emph{hector\textunderscore mapping} can be found in \cite{Kohlbrecher2011} and \cite{Kohlbrecher2012}. 
 
 \paragraph{Overview}
-The navigation module is realised using multiple nodes and packages. One of these nodes is the \emph{move\textunderscore base}-node, which has a major role in the system. This node provides the linkage between the global and local planning algorithms that are used to calculate a path from the start location to the destination. The explanation of these calculations is found in the next paragraph. Other nodes outside the package provide the inputs and outputs of the \emph{move\textunderscore base}-node. The needed inputs are the odometry data, transformations, localisation information, the map on which the navigation would take place and the data from a certain rangefinder. In our setup, a LiDAR-sensor (Light Detection and Ranging) serves as rangefinder. The commands by which the car would drive, are the generated outputs of the central navigation node. Figure \ref{fig:navstack_overall} shows the integration of the navigation module in the existing environment. Figure \ref{fig:navstack_global} illustrates an abstract overview of the navigation stack with its nodes and plug-ins \cite{Marder-Eppstein2016}. 
+The navigation module is realised using multiple nodes and packages. One of these nodes is the \emph{move\textunderscore base}-node, which has a major role in the system. This node provides the linkage between the global and local planning algorithms that are used to calculate a path from the start location to the destination. The explanation of these calculations is discussed in the next paragraph. Other nodes outside the package provide the inputs and outputs of the \emph{move\textunderscore base}-node. The required inputs are the odometry data, transformations, localisation information, the map on which the navigation takes place and the data from a certain rangefinder. In our setup, a LiDAR-sensor serves as rangefinder. The commands by which the car will drive, are the generated outputs of the central navigation node. Figure \ref{fig:navstack_overall} shows the integration of the navigation module in the existing environment. Figure \ref{fig:navstack_global} illustrates an abstract overview of the navigation stack with its nodes and plug-ins \cite{Marder-Eppstein2016}. 
 \begin{figure}[!t]
 	\includegraphics[width=\columnwidth]{navstack_overall}
 	\centering
@@ -477,11 +497,11 @@ The navigation module is realised using multiple nodes and packages. One of thes
 \end{figure}
 
 Inside the \textit{move\textunderscore base}-node, multiple calculations take place in order to navigate. 
-\paragraph{Global planning}
-In order to make a global plan, a global costmap must be generated. This particular map is derived from the environment map, which in turn is made by \emph{hector\textunderscore mapping}. A costmap is an occupancy grid which specifies where the car is allowed to navigate. An other node named \emph{global\textunderscore planner} calculates a path from start to destination, using the global costmap. The default implementation of this planner is \emph{navfn}, which uses Dijkstra as path finding algorithm, but we opted for the more advanced planner \emph{global\textunderscore planner} because of the ability to customise multiple parameters. Unfortunately, the name of the implementation is the same as the one of the node, thus making the whole structure a bit unclear. 
-\paragraph{Local planning}
+\paragraph{Global Planning}
+In order to make a global plan, a global costmap must be generated. This particular map is derived from the environment map, which in turn is made by \emph{hector\textunderscore mapping}. A costmap is an occupancy grid which specifies where the car is allowed to navigate. Another node named \emph{global\textunderscore planner} calculates a path from start to destination, using the global costmap. The default implementation of this planner is \emph{navfn}, which uses Dijkstra as path finding algorithm, but we opted for the more advanced planner \emph{global\textunderscore planner} because of the ability to customise multiple parameters. Unfortunately, the name of the implementation is the same as the one of the node, thus making the whole structure a bit unclear. 
+\paragraph{Local Planning}
 Second, the central node produces a local costmap which is used by the local planner. The costmap is made by obtaining LiDAR-information in a range of three meters around the car. In this way, unexpected obstacles are located on this costmap. Therefore, the local planner is able to plan a route around these obstructions. The default local planner is \emph{base\textunderscore local\textunderscore planner}\cite{Marder-Eppstein2017_2}. The planner is realised using Trajectory Rollout algorithm and Dynamic Window Approach\cite{Fox1997, Gerkey2008}. 
-Though, an other implementation is available for car-like robots. This planner is known as \emph{teb\textunderscore local\textunderscore planner}\cite{Rosmann2016}. It implements a methodology called \emph{timed elastic band} and is more optimised for car-like robots. As a safety feature, the \emph{move\textunderscore base}-node includes a recovery plug-in which plans a secondary route when the car is stuck and thus unable to follow the planned route.
+Though, another implementation is available for car-like robots. This planner is known as \emph{teb\textunderscore local\textunderscore planner} and it implements a methodology called \emph{timed elastic band}\cite{Rosmann2016}. As a safety feature, the \emph{move\textunderscore base}-node includes a recovery plug-in which plans a secondary route when the car is stuck and thus unable to follow the planned route.
 Figure \ref{fig:navstack_global} shows an abstract overview of the navigation stack with its nodes and plug-ins \cite{Marder-Eppstein2016_2, Zheng2016}.
 
 
@@ -493,30 +513,53 @@ Third, the robot must be able to guess its location on the given map. This is im
 Final, the translation from the velocity commands of the navigator to instructions for the motor controller needs to be made.
 
 \subsection{Waypoints}
-In this algorithm, a waypoint is similar to an instruction of  \emph{turn-by-turn}-based navigation. A waypoint consists of two datafields: \emph{direction} and \emph{count}.
+In this section, a waypoint is similar to an instruction of  \emph{turn-by-turn}-based navigation. A waypoint consists of two datafields: \emph{direction} and \emph{count}.
 The \emph{direction}-field has three possible options: \emph{straigt}, \emph{left} and \emph{right}. The \emph{count}-variable describes which turn should be taken. Figure \ref{fig:waypoints_turns} shows two examples. In the first case, the waypoint is described as $(\text{\emph{right}},\,2)$. I.e., the car should take the second exit on the right. The instruction of the second example is described as $(\text{\emph{left}},\,3)$. 
 
 \begin{figure}[!t]
 	\includegraphics[width=\columnwidth]{waypoints_turns}
 	\centering
-	\caption{a) illustrates a waypoint which is described as $(\text{\emph{right}},\,2)$. b) shows the instruction $(\text{\emph{left}},\,3)$. }
+	\caption{a) Illustrates a waypoint which is described as $(\text{\emph{right}},\,2)$. b) Shows the instruction $(\text{\emph{left}},\,3)$. }
 	\label{fig:waypoints_turns}
 \end{figure}
 
-The actual implementation of the algorithm is done by B. Smits and S. Maes for their bachelor's thesis, but first, a few prerequisites have to be made. We have to make sure the car drives in the middle of the road in order to drive in a hallway. Smits and Maes implemented multiple ROS-nodes which adjust the wheel position of the car by given LiDAR-data, thus regulating the distance with respect to the wall while driving. 
+The actual implementation of the algorithm is done by B. Smits and S. Maes for their bachelor's thesis \cite{SmitsMaes2017}, but first, a few prerequisites had to be made. We have to assume that the car drives in the middle of the road in order to drive in a hallway. Smits and Maes implemented multiple ROS-nodes which adjust the wheel position of the car with given LiDAR-data, thus regulating the distance with respect to the wall while driving. 
 
-With this ROS-nodes, the implementation of the algorithm takes place. When the car is driving and it detects a corner on one of its sides, the software checks if this is the corner that is specified by the waypoint instruction. If false, the car continues driving while focusing on the opposite wall, such that the car stays in the middle of the road. If the result is true, the car will take the turn by adjusting the wheel position until the car is parallel with the wall of the corner. If the software detects corners on both of its sides, but neither of them is specified by the waypoint, the steering position is set to neutral. Therefore, the car drives straight until a wall on either side is detected.
+With this ROS-nodes, the implementation of the algorithm takes place. When the car is driving and detects a corner on one of its sides, the software checks if this is the corner that is specified by the waypoint instruction. If not, the car continues driving while setting the steering position to a neutral state, such that the car stays in the middle of the road. If the result is true, the car will take the turn by adjusting the wheel position until the car is parallel with the wall of the corner. When corners on both sides are detected, but neither of them is specified by the waypoint, the steering position is also set to neutral in order to keep driving straight until a wall on either side is detected.
+
 \subsection{Optimisation Algorithm}
+Due to 
 
 \section{Test setup}
+\label{sec:TestSetup}
 \subsection{F1/10-car}
-The car used in this research consists of multiple sensors. First, a Hokuyo UST-10LX serves as LiDAR-sensor on the robot. With a refresh rate of 40 Hz and an angle resolution of 0.25\degree over a range of 270\degree, this sensor is capable for both fast and accurate measurements. 
+The car used in this research contains multiple sensors. First, a Hokuyo UST-10LX serves as LiDAR-sensor on the robot. With a refresh rate of 40 Hz and an angle resolution of 0.25$\degree$ over a range of 270\degree, this sensor is capable for both fast and accurate measurements. Second, an IMU-sensor (Inertial Measurement Unit) is present. This sensor consists of a magnetometer, gyroscope and accelerometer, all of which have three axes, thus having nine degrees of freedom in total.
 
-Second, an IMU-sensor (Inertial Measurement Unit) is present. This sensor consists of a magnetometer, gyroscope and accelerometer, all of which have three axes, thus having nine degrees of freedom.
+The ESC (Electronic Speed Controller) and steering servo are connected to a Teensy 3.2 development board containing an ARM M4 processor. This microcontroller generates two PWM-signals (Pulse Width Modulation) 
+
+The processing unit is an NVIDIA Tegra K1, which consists of a quad core processor, assisted by 192 \emph{CUDA}-cores as graphical unit. These units are located on a Soc (System on a Chip) which is integrated on a development board of NVIDIA, i.e. Jetson TK1.
+
+\begin{figure}[!t]
+	\includegraphics[width=\columnwidth]{f1_lidar_tk1}
+	\centering
+	\caption{a) Shows the Hokuyo UST-10LX as LiDAR-sensor. In b), the development board NVIDIA Jetson TK1 is shown.}
+	\label{fig:f1_lidar_tk1}
+\end{figure}
+
+\subsection{Prerequisites}
+Before the car was able to navigate in indoor environments, certain prerequisites had to be made. First, the car was unable to drive at a low speed. This low speed was needed to avoid heavy crashes when debugging the software. The general approach is to modulate the ESC-signal with a square wave, such that the motor controller is turned on and off, thus regulating the speed. The first solution was to modulate the signal with another PWM-signal. Thus, the duty cycle could be adjusted in order to regulate the motor power. Several problems arose when using this method. The speed controller does not accept high frequency signals with a low duty cycle. Additionally, the M4-processor could not generate block signals with a low frequency and high duty cycles.
+
+Due to this problems, we were urged to develop a new solution. In this approach, the frequency varies while the duty cycle is fixed. For example, the motor has less time to accelerate when increasing frequency of the square wave. Obviously, the acceleration time increases as the frequency decreases, resulting in a smoother driving experience.
 
 \section{Results}
-\subsection{Fixed path}
-Figure \ref{fig:navstack_tf} shows the transformations created by the aforementioned nodes. 
+\label{sec:Results}
+\subsection{Fixed Path}
+The navigation stack is installed on the NVIDIA Jetson. In order to control this navigator, we utilised an external virtual machine (VM) running Ubuntu 16.04. This VM provides the \emph{rviz}-environment, which is a visualisation tool in ROS. Using this tool, we are able to send locations, goals and other data to the navigation stack. 
+%The navigation stack is tested by using an external virtual machine running Ubuntu 16.04. In order to send locations and goals to the navigation stack, the \emph{rviz}-environment--a visualisation tool in ROS--was used.
+% on which the \emph{rviz}-environment--a visualisation tool in ROS--is used. This tool 
+%The \emph{rviz}-environment--a visualisation tool in ROS--is used for sending positions and goals to the navigation stack.
+
+Figure \ref{fig:navstack_tf} shows the transformations created by the aforementioned nodes. The planned route is shown in figure \ref{fig:navstack_result}, along with a close-up of the car navigating on that path. Additionally, figure \ref{fig:navstack_tf} illustrates the transformations which are created by the transformation nodes of the navigation stack
 
 \begin{figure}[!t]
 	\includegraphics[width=\columnwidth]{navstack_result_1}
@@ -529,25 +572,25 @@ Figure \ref{fig:navstack_tf} shows the transformations created by the aforementi
 	\includegraphics[width=\columnwidth]{navstack_tf2}
 	\centering
 	\caption{Created transformation frames for the navigation stack. a) and b) are static transformations. The transformation in c) is provided using the odometry data from \emph{hector\textunderscore mapping}. d) is provided by the \emph{AMCL}-node, which links the map with the pose of the robot.}
-		%The transforms between \emph{laser}, \emph{base\textunderscore link} and \emph{base\textunderscore frame} are static transforms. Next, the \emph{hector\textunderscore odom}-link is created by a node which translates the odometry of \emph{hector\textunderscore mapping}. The \emph{amcl}-transform is created by the localisation provider.}
 	\label{fig:navstack_tf}
 \end{figure}
 
-The planned route is shown in figure \ref{fig:navstack_result}, along with a close-up of the car navigating on that path. Additionally, figure \ref{fig:navstack_tf} illustrates the transformations which are created by the transformation nodes of the navigation stack
-
-A major drawback of the navigation stack is its lack of optimisation for car-like robots. Instead, it is especially created for robots with holonomic or differential steering mechanisms. Therefore, the car is sometimes unable to follow the calculated path. Because of this problem, we implemented \emph{teb\textunderscore local\textunderscore planner} such that the route would be more optimised for Ackermann-steering. It appeared that this planner needed a a lot of computing power. The onboard NVIDIA Jetson TK1 was unable to finish at a requested rate of 2 Hz. Instead, each calculation lasted approximately three seconds. Even a virtual machine with high specifications could not finish the process. The virtual machine was hosted by a macOS-host with Parallels as virtualisation software. The specifications were set to eight virtual cores and four gigabytes of RAM. Because of this latency, the default local planner was used for further usage. Although using this planner could result in pivot points and sharp curves, the car is perfectly able to navigate on the trajectory if the curves are almost straight and without turning points.
-Another drawback is the low driving speed at which the car has to drive in order to update its position. By increasing speed, a certain latency exists between the actual position and the calculated one. As a result, the navigation stack is too slow with processing a new local path, so crashes could occur.
+A major drawback of the navigation stack is its lack of optimisation for car-like robots. Instead, it is especially created for robots with holonomic or differential steering mechanisms. Therefore, the car is sometimes unable to follow the calculated path. Because of this problem, we implemented \emph{teb\textunderscore local\textunderscore planner} such that the route would be more optimised for Ackermann-steering. It appeared that this planner needed a lot of computing power. The onboard NVIDIA Jetson TK1 was unable to calculate paths at a requested rate of 2 Hz. Instead, each calculation lasted approximately three seconds. Even a virtual machine with high specifications was unable to meet the requirements. The virtual machine was hosted by a macOS-host with Parallels as virtualisation software. The specifications were set to eight virtual cores and four gigabytes of RAM. Because of this latency, the default local planner was used for further usage. Although using this planner could result in pivot points and sharp curves, the car is perfectly able to navigate on the trajectory if the curves are almost straight and without turning points.
+Another limitation is the low driving speed at which the car has to drive in order to update its position. By increasing speed, a certain latency exists between the actual position and the calculated one. As a result, the navigation stack is too slow with processing a new local path, so crashes could occur.
 
 \subsection{Waypoints}
-With the first implementation of the algorithm, the system detected many false positives. That is, the car turned left or right while a corner was absent. This phenomenon happened when, for example, the car was in the vicinity of a door. After a few adjustments, the detection rate of false positives decreased drastically. 
+With the first implementation of the waypoints algorithm, the system detected many false positives. That is, the car turned left or right while a corner was absent. This phenomenon happened when, for example, the car was in the vicinity of a door. After a few adjustments, the detection rate of false positives decreased drastically. 
 
 \subsection{Optimisation Algorithm}
 
 \section{Comparative study}
-
-\section{Conclusion}
-
+\label{sec:ComparativeStudy}
 \section{Further Research}
+\label{sec:FurtherResearch}
+\section{Conclusion}
+\label{sec:Conclusion}
+
+
 
 % trigger a \newpage just before the given reference
 % number - used to balance the columns on the last page
