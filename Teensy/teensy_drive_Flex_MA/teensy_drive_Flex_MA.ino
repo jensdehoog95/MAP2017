@@ -1,17 +1,11 @@
 #include <ros.h>
 #include <std_msgs/Bool.h>
 #include <std_msgs/String.h>
-//#include <std_msgs/Int32.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Empty.h>
 #include <race/drive_values.h>
-//#include <TimerOne.h>
 #include <TimerThree.h>
 #include "Flextimer.hpp"
-
-//#include "Arduino.h"
-//#include "WProgram.h"
-//#include "config/known_16bit_timers.h"
 
 #define windowSize 5
 
@@ -44,7 +38,7 @@ int pwm_forward_ticks_off = 9900;
 int pwm_backward_ticks_on = 9191;
 int pwm_backward_ticks_off = 9762;
 
-// For moving average we define an 5 value-array and a pointer to array
+// For moving average we define a 5 value-array and a pointer to array
 //int windowSize = 5;
 int Array[windowSize] = {0};
 int pointerArray = -1;
