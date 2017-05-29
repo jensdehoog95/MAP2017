@@ -404,8 +404,7 @@
 \maketitle
 
 \begin{abstract}
-%\boldmath
-\lipsum[1]
+The original purpose of the F1/10-car, an F1-car with scaling factor 1/10, was to organise race competitions. However, this car is an ideal test bed for real autonomous cars. Therefore, this paper implements and compares three different navigation algorithms. The first algorithm involves the Navigation Stack from the ROS-framework (Robot Operating System), which allows the car to drive on a fixed path. The second algorithm processes waypoints in order to reach the destination and the last method implements an optimisation algorithm. Due to the limited time frame, the implementation of the last algorithm has not finished yet. Thus, the paper only compares two methodologies. The first one has a low maximum speed but an accurate goal description, whereas the second algorithm maintains a high speed, but the goal is described in a more abstract way, making the destination inaccurate.
 
 \end{abstract}
 % IEEEtran.cls defaults to using nonbold math in the Abstract.
@@ -470,7 +469,7 @@ For example, finding a path in a complex environment is one of the capabilities 
 
 Several path finding algorithms have been developed over the past few years. First, Garcia et al. propose an algorithm based on \emph{ant colony optimisation}\cite{Garcia2009}. This type of optimisation relies on the behaviour of real ants, which spread a pheromone when walking on a path in search of food \cite{Dorigo2006}. As the pheromones evaporate after a period of time, a shorter path contains more chemical substances. As a result, the path with the most pheromones is the shortest path to the destination. Garcia et al. considers such an ant as a robot, searching for its destination. By assigning costs to each path, which are based on effort and distance, and iterating over the algorithm, the shortest path is found.
 
-Saska et al. suggest a path planning methodology using \emph{particle swarm optimisation} (\emph{PSO}) and Ferguson Splines \cite{Saska2006}. In PSO, the particles in this algorithm are suggested solutions. Each particle knows its local best position, which affects the movement of that particle. The best position in the search space also affects this movement. This combination results in particles moving to a position which represents the global minimum, thus the most optimised point. A path containing these Ferguson Splines is considered as a smooth path, which is feasible for a car-like robot.
+Saska et al. suggest a path planning algorithm for robotic football, using \emph{particle swarm optimisation} (\emph{PSO}) and Ferguson Splines \cite{Saska2006}. In PSO, the particles in this algorithm are suggested solutions. Each particle knows its local best position, which affects the movement of that particle. The best position in the search space also affects this movement. This combination results in particles moving to a position which represents the global minimum, thus the most optimised point. A path containing these Ferguson Splines is considered as a smooth path, which is feasible for a car-like robot. A major drawback of this algorithm is the lack of dynamic updates. When a change in the environment occurs, the algorithm has to restart, which results in a high calculation time. Nasrollahy and Javadi suggested a methodology for using PSO in a dynamic environment \cite{Nasrollahy2009}. 
 
 %Finally, Saska et al. \cite{Saska2006} suggest a path planning methodology using PSO and Ferguson Splines. A path containing these splines is considered as a smooth path, which is feasible for a car-like robot.
 \section{Implementations}
@@ -513,7 +512,7 @@ Third, the robot must be able to guess its location on the given map. This is im
 Final, the translation from the velocity commands of the navigator to instructions for the motor controller needs to be made.
 
 \subsection{Waypoints}
-In this section, a waypoint is similar to an instruction of  \emph{turn-by-turn}-based navigation. A waypoint consists of two datafields: \emph{direction} and \emph{count}.
+A waypoint is similar to an instruction of  \emph{turn-by-turn}-based navigation. A waypoint consists of two datafields: \emph{direction} and \emph{count}.
 The \emph{direction}-field has three possible options: \emph{straigt}, \emph{left} and \emph{right}. The \emph{count}-variable describes which turn should be taken. Figure \ref{fig:waypoints_turns} shows two examples. In the first case, the waypoint is described as $(\text{\emph{right}},\,2)$. I.e., the car should take the second exit on the right. The instruction of the second example is described as $(\text{\emph{left}},\,3)$. 
 
 \begin{figure}[!t]
@@ -523,21 +522,28 @@ The \emph{direction}-field has three possible options: \emph{straigt}, \emph{lef
 	\label{fig:waypoints_turns}
 \end{figure}
 
-The actual implementation of the algorithm is done by B. Smits and S. Maes for their bachelor's thesis \cite{SmitsMaes2017}, but first, a few prerequisites had to be made. We have to assume that the car drives in the middle of the road in order to drive in a hallway. Smits and Maes implemented multiple ROS-nodes which adjust the wheel position of the car with given LiDAR-data, thus regulating the distance with respect to the wall while driving. 
+The following paragraph clarifies the algorithm. When the car is driving and detects a corner on one of its sides, the software checks if this is the corner that is specified by the waypoint instruction. If not, the car continues driving while setting the steering position to a neutral state, such that the car stays in the middle of the road. If the result is true, the car will take the turn by adjusting the wheel position until the car is parallel with the wall of the corner. When corners on both sides are detected, but neither of them is specified by the waypoint, the steering position is also set to neutral in order to keep driving straight until a wall on either side is detected.
 
-With this ROS-nodes, the implementation of the algorithm takes place. When the car is driving and detects a corner on one of its sides, the software checks if this is the corner that is specified by the waypoint instruction. If not, the car continues driving while setting the steering position to a neutral state, such that the car stays in the middle of the road. If the result is true, the car will take the turn by adjusting the wheel position until the car is parallel with the wall of the corner. When corners on both sides are detected, but neither of them is specified by the waypoint, the steering position is also set to neutral in order to keep driving straight until a wall on either side is detected.
+The actual implementation of the algorithm is done by B. Smits and S. Maes for their bachelor's thesis \cite{SmitsMaes2017}. An elaborated discussion is found in their paper. It is also worth noting that we have to assume the car drives in the middle of the road. Smits and Maes implemented multiple ROS-nodes which adjust the wheel position of the car with given LiDAR-data, thus regulating the distance with respect to the wall while driving. 
 
 \subsection{Optimisation Algorithm}
-Due to 
+\label{sec:OptAlgorithm}
+Due to the limited time frame of this thesis, the implementation of an optimisation algorithm has not finished yet. Though, as mentioned in the previous section, the Ferguson Splines used in \cite{Saska2006} are suitable for the F1/10-car.
 
 \section{Test setup}
 \label{sec:TestSetup}
 \subsection{F1/10-car}
-The car used in this research contains multiple sensors. First, a Hokuyo UST-10LX serves as LiDAR-sensor on the robot. With a refresh rate of 40 Hz and an angle resolution of 0.25$\degree$ over a range of 270\degree, this sensor is capable for both fast and accurate measurements. Second, an IMU-sensor (Inertial Measurement Unit) is present. This sensor consists of a magnetometer, gyroscope and accelerometer, all of which have three axes, thus having nine degrees of freedom in total.
+The car used in this research is driven by an NVIDIA Jetson TK1 development board. This board contains a System on a Chip (Soc), which is known as Tegra K1 from the same manufacturer. The SoC consists of a quad core CPU, which is made of four ARM Cortex-A15-cores. The CPU is assisted by 192 CUDA-cores as graphical unit.
 
-The ESC (Electronic Speed Controller) and steering servo are connected to a Teensy 3.2 development board containing an ARM M4 processor. This microcontroller generates two PWM-signals (Pulse Width Modulation) 
+The used operating system is an Ubuntu distribution, i.e. version 14.04. The ROS-ecosystem (Robot Operating System) serves as middleware application. This open-source framework provides different types of libraries and packages in order to develop custom robot applications. Different ROS-nodes communicate with each other via the Publish-Subscribe-methodology.
 
-The processing unit is an NVIDIA Tegra K1, which consists of a quad core processor, assisted by 192 \emph{CUDA}-cores as graphical unit. These units are located on a Soc (System on a Chip) which is integrated on a development board of NVIDIA, i.e. Jetson TK1.
+Additionally, multiple sensors are present. First, a Hokuyo UST-10LX serves as LiDAR-sensor on the robot. With a refresh rate of 40 Hz and an angle resolution of 0.25$\degree$ over a range of 270\degree, this sensor is capable of both fast and accurate measurements. Second, an IMU-sensor (Inertial Measurement Unit) is available. This sensor consists of a magnetometer, gyroscope and accelerometer, all of which have three axes, thus having nine degrees of freedom in total. The output of both of these sensors is handled by different ROS-nodes, which in turn publish the information to other nodes.
+
+The body of the car itself is made by Traxxas. The Velineon VXL-3s serves as motor controller or ESC and is connected to a Teensy 3.2 development board, containing an ARM Cortex-M4 processor. The steering servo is also connected to this development board. The microcontroller generates two PWM-signals (Pulse Width Modulation) that are sent to the ESC and servo in order to control the behaviour of the car. This microcontroller also communicates with other nodes via ROS.
+
+%The ESC (Electronic Speed Controller) and steering servo are connected to a Teensy 3.2 development board containing an ARM Cortex-M4 processor. This microcontroller generates two PWM-signals (Pulse Width Modulation) that are sent to the ESC and servo in order to control the behaviour of the car. This microcontroller also communicates with other nodes via ROS.
+
+Figure \ref{fig:f1_lidar_tk1} shows the used LiDAR-sensor from Hokuyo and the NVIDIA Jetson TK1 development board.
 
 \begin{figure}[!t]
 	\includegraphics[width=\columnwidth]{f1_lidar_tk1}
@@ -551,15 +557,13 @@ Before the car was able to navigate in indoor environments, certain prerequisite
 
 Due to this problems, we were urged to develop a new solution. In this approach, the frequency varies while the duty cycle is fixed. For example, the motor has less time to accelerate when increasing frequency of the square wave. Obviously, the acceleration time increases as the frequency decreases, resulting in a smoother driving experience.
 
+Another prerequisite we had to make, was the ability to drive at a constant speed. First, we opted for speed regulation via the IMU-sensor. Though, it appeared that this method was unable to derive the speed from the output data. We tried many methods such as a Kalman-filter, complementary filter or derivation of speed from raw accelerometer data, but all of the obtained resuls were not as expected. Therefore, an RPM-sensor from Traxxas is integrated in the body and is connected to the Teensy development board. The sensor is based on the Reed-principle. Every 100 ms, the Teensy board counts how many rotations occurred. This value is published via ROS. A speed regulator, which uses this RPM-counter, is implemented in the bachelor's thesis of Smits and Maes \cite{SmitsMaes2017}.
+
 \section{Results}
 \label{sec:Results}
 \subsection{Fixed Path}
-The navigation stack is installed on the NVIDIA Jetson. In order to control this navigator, we utilised an external virtual machine (VM) running Ubuntu 16.04. This VM provides the \emph{rviz}-environment, which is a visualisation tool in ROS. Using this tool, we are able to send locations, goals and other data to the navigation stack. 
-%The navigation stack is tested by using an external virtual machine running Ubuntu 16.04. In order to send locations and goals to the navigation stack, the \emph{rviz}-environment--a visualisation tool in ROS--was used.
-% on which the \emph{rviz}-environment--a visualisation tool in ROS--is used. This tool 
-%The \emph{rviz}-environment--a visualisation tool in ROS--is used for sending positions and goals to the navigation stack.
-
-Figure \ref{fig:navstack_tf} shows the transformations created by the aforementioned nodes. The planned route is shown in figure \ref{fig:navstack_result}, along with a close-up of the car navigating on that path. Additionally, figure \ref{fig:navstack_tf} illustrates the transformations which are created by the transformation nodes of the navigation stack
+The navigation stack is installed on the NVIDIA Jetson. In order to control this navigator, we utilised an external virtual machine (VM) running Ubuntu 16.04. This VM provides the \emph{rviz}-environment, which is a visualisation tool in ROS. Using this tool, we are able to send locations to the navigation stack, such as pose estimates and goals. These locations are specified by a position in the XYZ-space and a quaternion as orientation. The units are respectively meters and radians. When using the navigation stack, the \emph{rviz}-tool visualises the position of the car, the calculated paths and the provided map. This visualisation is shown in figure \ref{fig:navstack_result}.
+Figure \ref{fig:navstack_tf} illustrates the transformations which are created by the transformation nodes of the navigation stack.
 
 \begin{figure}[!t]
 	\includegraphics[width=\columnwidth]{navstack_result_1}
@@ -578,18 +582,40 @@ Figure \ref{fig:navstack_tf} shows the transformations created by the aforementi
 A major drawback of the navigation stack is its lack of optimisation for car-like robots. Instead, it is especially created for robots with holonomic or differential steering mechanisms. Therefore, the car is sometimes unable to follow the calculated path. Because of this problem, we implemented \emph{teb\textunderscore local\textunderscore planner} such that the route would be more optimised for Ackermann-steering. It appeared that this planner needed a lot of computing power. The onboard NVIDIA Jetson TK1 was unable to calculate paths at a requested rate of 2 Hz. Instead, each calculation lasted approximately three seconds. Even a virtual machine with high specifications was unable to meet the requirements. The virtual machine was hosted by a macOS-host with Parallels as virtualisation software. The specifications were set to eight virtual cores and four gigabytes of RAM. Because of this latency, the default local planner was used for further usage. Although using this planner could result in pivot points and sharp curves, the car is perfectly able to navigate on the trajectory if the curves are almost straight and without turning points.
 Another limitation is the low driving speed at which the car has to drive in order to update its position. By increasing speed, a certain latency exists between the actual position and the calculated one. As a result, the navigation stack is too slow with processing a new local path, so crashes could occur.
 
+A final adjustment is made in the goal tolerance. Because of the Ackermann-steering mechanism, chances are that the goal is never reached due to the constraints of a car-like robot. To overcome this problem, a certain tolerance is set for both position and orientation. A margin of one meter is set for the position, whereas an orientation margin of $2\pi$ is active such that any orientation is possible in order to reach the goal.
+
 \subsection{Waypoints}
 With the first implementation of the waypoints algorithm, the system detected many false positives. That is, the car turned left or right while a corner was absent. This phenomenon happened when, for example, the car was in the vicinity of a door. After a few adjustments, the detection rate of false positives decreased drastically. 
 
+A major drawback of this algorithm is the use of raw LiDAR-data. When the car is driving along a black object, the laser beam does not return a reflection, which results in the maximum range of the sensor. Thus, the algorithm detects a corner and the car starts to manoeuvre. This problem is partially solved by taking multiple measurements on different angles. However, the problem still occurs when using large black objects. Though, none of these problems occur in environments without black objects. 
+
+An advantage of this method is the ability to maintain a high speed. By relying on raw LiDAR-data instead of location tracking, the refresh rate of the algorithm is much higher. 
+
 \subsection{Optimisation Algorithm}
+As mentioned in section \ref{sec:OptAlgorithm}, no implementation and results are available yet. Though, we expect that parameter optimisations are needed and many iterations of the PSO-algorithm are required in order to navigate the car using the calculated paths.
 
 \section{Comparative study}
 \label{sec:ComparativeStudy}
+The first method was to navigate on a fixed path. Using this method, an accurate destination can be reached as it is specified in very precise values. Though, a tolerance is set in order to reach the goal properly with a car-like robot. In case of a holonomic robot or a robot with a differential steering mechanism, this tolerance is not required. A drawback of this navigation stack is the slow refresh rate. Therefore, only low speeds are possible. If a faster speed is applied, the module is unable to keep up with the fast location updates. These advantages and disadvantages make this approach suitable for applications where a low speed is not really a drawback, but an exact destination is required.
+
+The second algorithm, on the other hand, is capable of maintaining high speeds as no location tracking is needed. As mentioned in the previous section, the refresh rate of this algorithm is much higher. Each time the LiDAR-sensor publishes a message, the algorithm is executed. Hence, the refresh rate is 40 Hz. A drawback of this methodology is the inaccuracy of the goal. The algorithm is not capable of reaching an exact destination point. Instead, the goal is an abstract instruction. This waypoint approach is suitable for applications where the maximum speed is really important and the destination point does not need to be exact. An example of such an application is an indoor race track with many possible passages.
+
+According to \cite{Saska2006}, the optimisation algorithm is able to calculate a path for a car-like robot in a complex environment. Though, a real-time update of the path is not possible yet without restarting the algorithm. 
+
 \section{Further Research}
 \label{sec:FurtherResearch}
+First of all, the optimisation algorithm, developed by Saska \cite{Saska2006}, needs to be implemented and compared to the other algorithms in order to finish the research. 
+
+As mentioned in the previous paragraph, the algorithm of Saska has a slow update speed. However, if we are able to combine the work of Saska with the algorithm of Nasrollahy \cite{Nasrollahy2009}, which suggests a PSO-method for using in a dynamically changing environment, then we have path planner for car-like robots which updates in real-time. This would be an advantage in comparison with the navigation stack of our first method. The only drawback would be the location tracking. Therefore, only a low speed can be maintained. 
+
+By optimising the location tracker, which is used in the navigation stack and the optimisation algorithm, we are able to increase the update rate, thus resulting in a higher maximum driving speed.
+
+Additionally, research could be conducted in optimising the navigation stack for car-like robots. 
+
 \section{Conclusion}
 \label{sec:Conclusion}
-
+In order to explore the navigation capabilities of an F1/10-car, this paper has introduced three different types of navigation algorithms. I.e., navigating by a fixed path, via waypoint instructions and via an optimisation algorithm. The paper implemented two algorithms instead of three, due to the limited time frame. These two algorithms have been compared with each other. The drawback of the first method is the limit to low driving speeds, while the accurate specification of a goal makes the algorithm suitable for exact navigation commands. The second algorithm is able to maintain higher speeds, but a goal is specified in a more abstract way. Thus, the algorithm is ideal in environments where speed is more important than the goal.
+The last algorithm is listed in further research, as it needs to be implemented and tested to finish the research.
 
 
 % trigger a \newpage just before the given reference
