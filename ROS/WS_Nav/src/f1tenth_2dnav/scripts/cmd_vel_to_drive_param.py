@@ -31,16 +31,6 @@ def cmd_callback(data):
     throttle = 0.0
   else:
     throttle = throttle_temp
-
- #  if throttle_temp >= 50:
- #    throttle = speed
- #  else:
- #    throttle = 0.0
- 
-#  if throttle_temp < 1.0:
-#    throttle = 0.0
-#  else:
-#    throttle = throttle_temp
  
   steering = steering * -100.0
 
