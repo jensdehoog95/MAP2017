@@ -2,7 +2,12 @@
 
 <launch>
 
-  <param name="/use_sim_time" value="true"/>
+<!-- Set argument to 'true' when using Gazebo/Rosbags -->
+  <arg name="sim_time" default="false"/>
+
+<!-- Global arguments -->
+  <arg name="map_name" default="zbuilding.yaml"/>
+  <arg name="speed" default="3.0"/>
 
 <!-- Argument names for amcl parameters-->
   <arg name="use_map_topic"   default="true"/>
@@ -19,15 +24,10 @@
   <arg name="odom_frame" default="odom_frame"/>
   <arg name="pub_map_odom_transform" default="false"/>
   <arg name="scan_subscriber_queue_size" default="5"/>
-  <arg name="scan_topic" default="updatedLaser"/>
+  <arg name="scan_topic" default="scan"/>
   <arg name="map_size" default="2048"/>
 
-  <arg name="map_name" default="living3.yaml"/>
-  <arg name="speed" default="3.0"/>
-
-<!-- Uncomment in case of rosbag -->
-  <!--<param name="/use_sim_time" value="true"/>-->
-
+  <param name="/use_sim_time" value="$(arg sim_time)"/>
 
 <!-- Map server -->
   <node pkg="map_server" type="map_server" name="map_server" args="$(find f1tenth_2dnav)/maps/$(arg map_name)"  output="screen" />
@@ -122,12 +122,13 @@
 
 <!-- move_base node -->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+
     <!-- Internal parameters of move_base -->
-   
+
     <param name="controller_frequency" value="15"/>
     <!--<param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />-->
-    <!--<param name="base_global_planner" value="global_planner/GlobalPlanner"/>
-    <param name="global_planner/use_dijkstra" value="false"/>-->
+    <param name="base_global_planner" value="global_planner/GlobalPlanner"/>
+
     <!-- External parameters of move_base -->
 
     <rosparam file="$(find f1tenth_2dnav)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
@@ -135,9 +136,12 @@
     <rosparam file="$(find f1tenth_2dnav)/config/local_costmap_params.yaml" command="load" />
     <rosparam file="$(find f1tenth_2dnav)/config/global_costmap_params.yaml" command="load" />
     <rosparam file="$(find f1tenth_2dnav)/config/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find f1tenth_2dnav)/config/global_planner_params.yaml" command="load" />
   </node>
   
+<!-- Convertor from 'cmd_vel' to 'drive_param' -->
   <node pkg="f1tenth_2dnav" type="cmd_vel_to_drive_param.py" name="cmd_vel_to_drive_param" output="screen">
     <param name="speed" value="$(arg speed)"/>
   </node>
+
 </launch>
