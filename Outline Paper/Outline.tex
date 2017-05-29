@@ -352,7 +352,7 @@
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
 %\title{Survey paper: \\Artificial Intelligence for optimisation of HVAC-systems}
-\title{Autonomous F1/10-car using Artificial Intelligence }
+\title{A Comparative Study of Algorithms towards an Autonomous F1/10-Car}
 
 
 % author names and affiliations
@@ -380,14 +380,11 @@
 
 \author{
 \IEEEauthorblockN{Jens de Hoog\IEEEauthorrefmark{1},
-		Maggy Goossens\IEEEauthorrefmark{1}\IEEEauthorrefmark{3},
+		Thomas Huybrechts\IEEEauthorrefmark{1}\IEEEauthorrefmark{4},
 		Peter Hellinckx\IEEEauthorrefmark{1}\IEEEauthorrefmark{4}\\
-	jens.dehoog@student.uantwerpen.be, maggy.goossens@uantwerpen.be, peter.hellinckx@uantwerpen.be}
+	jens.dehoog@student.uantwerpen.be, thomas.huybrechts@uantwerpen.be, peter.hellinckx@uantwerpen.be}
 	\\\IEEEauthorblockA{
 	    \IEEEauthorrefmark{1}Department of Applied Engineering, Electronics-ICT, University of Antwerp, Belgium
-	}
-	\IEEEauthorblockA{
-	    \IEEEauthorrefmark{3}CoSys-Lab, Department of Applied Engineering, University of Antwerp - iMinds, Belgium
 	}
 	\IEEEauthorblockA{
 	    \IEEEauthorrefmark{4}IDLab, Department of Applied Engineering, University of Antwerp - iMinds, Belgium
@@ -424,50 +421,68 @@ Insert abstract of the paper.
 
 
 \section{Introduction}
-Despite the fact that artificial intelligence (AI) is not a new concept, it has become increasingly popular these days. Its first goal was to let machines replicate the intelligence of a human being, but that goal appeared to be more difficult than researches thought it would be. Slow progress was made for the next years, but technology has become more powerful and the interest in AI increased again, especially in marketable aspects\cite{Brooks1991}. At present, AI is quite ubiquitous and is implemented in many topics, such as self-driving cars. \\
+%Despite the fact that artificial intelligence (AI) is not a new concept, it has become increasingly popular these days. Its first goal was to let machines replicate the intelligence of a human being, but that goal appeared to be more difficult than researches thought it would be. Slow progress was made for the next years, but technology has become more powerful and the interest in AI increased again, especially in marketable aspects\cite{Brooks1991}. At present, AI is quite ubiquitous and is implemented in many topics, such as self-driving cars. \\
 
-*Moet nog uitgebreid worden*
+%*Moet nog uitgebreid worden*
 
-\section{Prerequisites}
-\subsection{F1/10-car}
-Hierin ga ik vertellen over de auto zelf, hoe deze is opgebouwd en welke sensoren aanwezig zijn. Ook vertel ik over het ROS-besturingssysteem, het sturen en de motoraandrijving. Bij dit laatste punt komt het feit naar boven dat traag rijden moeilijk is en dat er een oplossing voor gezocht moet worden.
+\section{F1/10-car}
+\subsection{Global}
+Ik vertel over de wagen in het algemeen en welke sensoren eropzitten. Dit gebeurt heel kort.
+Ook vertel ik over de globale structuur van ROS en welke belangrijke nodes er gebruikt worden.
 
-\subsection{Slow Accurate Driving}
-Hierin leg ik uit hoe het systeem om traag te rijden is gevorderd. Eerst gaat het over de ontwikkeling van de zogenaamde PWM-ception. Dit onderdeel krijgt natuurlijk een andere en deftigere naam. Ook komen hierin de problemen aan bod die ik heb ondervonden met het PWM-signaal. Dit omvat onder andere de Teensy die gaan lage frequenties met hoge dutycycles kan opwekken, of de ESC die geen hoge frequenties met lage dutycycles accepteert.
+\subsection{Prerequisites}
+In dit deel vertel ik over het traag rijden en het rijden tegen constante snelheid.
+\begin{itemize}
+\item Slow accurate driving: er wordt een beetje aandacht besteedt aan de twee approaches en waarom ze wel/niet werkten
+\item Ik vertel kort waarom het rijden op softwareniveau (met IMU) niet werkten en hoe het met de RPM-sensor is opgelost.
+\end{itemize}
 
-Het systeem is ge\"{e}volueerd naar het systeem met de tellers en ticks. Ook dit systeem zal in beperkte mate uitgelegd worden.
+\section{Algorithms}
+\subsection{Global}
+Hierin vertel ik over de verschillende approaches en wat ze verschillend maakt.
 
-\subsection{Driving at constant speed}
-Het is een handigheid om op een hoger abstractieniveau "Ik wil 5km/u rijden" te kunnen zeggen. Dit komt vooral van pas bij de artificiële intelligentie. Daarom moet er een systeem gebouwd worden dat het rijden tegen constante snelheid voorziet. Dat systeem wordt in dit deel uitgelegd. De lezer ontdekt welke technieken ik heb geprobeerd en welke uiteindelijk gekozen is.
+\subsection{Fixed path}
+\begin{description}
+\item[Literature] \hfill \\ In dit deel leg ik verschillende globale algoritmes naast elkaar. Ook vertel ik dat de Navigation Stack aanwezig is in ROS en dat deze daa
 
-\subsection{Calculations}
-Hierin vertel ik welke berekeningen gemaakt moeten worden om proper te kunnen rijden. Mooie voorbeelden zijn het throttlen en sturen voor het rijden op de ideale racelijn.
+\item[Navigation Stack] \hfill \\ Hierin vertel ik dat er een implementatie bestaat in het ROS-framework, hoe deze is opgebouwd (subnodes, lokale / globale planner, AMCL, \ldots), wat er is foutgelopen bij het opzetten van de Stack en wat de oplossingen daarvoor waren. Ook vertelt dit deel over het feit dat de Stack in principe gemaakt is voor een differenti\"{e}le of holonomische sturing. Oplossingen worden daarvoor aangereikt, samen met de uitleg waarom die oplossingen goed/slecht waren.
+Het ‘foutgelopen+oplossingen’-deel is beknopt. De oplossingen worden aangereikt in een korte maar duidelijke manier. 
 
-\section{Artificial Intelligence}
-\subsection{Introduction and definitions}
-%\subsubsection{Definitions}
-The subject 'Artificial Intelligence' has many definitions, but Davis preferred this one: "There are a number of cognitive tasks that people do easily---often, indeed, with no consciousthought at all---but that it is extremely hard to program on computers. Artificial intelligence, as I define it, is the study of getting computers to carry out these tasks."\cite{Davis2014} Copeland stated another definition: "Artificial Intelligence is usually defined as the science of making computers do things that require intelligence when done by humans." \cite{Cop2000}\\
+\item[Resultaten] \hfill \\ Dit deel vertelt over het verloop van het navigeren d.m.v. de Stack. Er komen foto’s aan bod van het uitgestippelde pad, de auto die tegen de muur zit, \ldots
 
-According to the research of Tk{\'{a}}{\v{c}} et al.\cite{Tkac2015}, artificial neural networks are structures which were built to match the aggregation of knowledge in a human nerve system. These artificial structures can solve non-linear problems which are extremely hard to solve by a conventional computational structure. Because of the flexibility, sturdiness and efficiency, these artificial neural networks are gaining popularity in different sorts of applications such as pattern recognition systems and financial utilisations.\cite{yegnanarayana2009artificial,Tkac2015}\\
+\end{description}
 
-*Kan nog uitgebreid worden*
+\subsection{Waypoints}
+\begin{description}
+\item[Literature] \hfill \\ In dit deel komen verschillende algoritmes naar boven die in de literatuur te vinden zijn. Ook wordt er gezegd waarom deze algoritmes niet goed genoeg zijn voor mijn doel en dat ik daarom zelf een algoritme heb ontwikkeld.
 
-\subsection{Applied on F1/10-car}
-In dit deel praat ik over hoe AI in mijn systeem is ge\"{i}ntegreerd en hoe het concept in z'n werking gaat. Hoe de sensoren, ROS en de AI samenwerken, wordt hier uitgelegd met behulp van blokschema's en flowcharts. 
+\item[Concept] \hfill \\ Deze paragraaf legt het algoritme uit, samen met alle edge cases (wat als een muur wegvalt, wat als ik een kruispunt tegenkom, \ldots).
 
-\subsection{Implementation}
-Dit onderdeel handelt over de exacte implementatie, zonder stukken code te laten zien. Hier vertel ik over hoe het gekozen framework (bijvoorbeeld TensorFlow) in elkaar gestoken is. Het verschil met de vorige paragraaf is dat daar de AI gezien wordt als een zwarte doos die verbonden wordt met andere onderdelen. In dit deel wordt die zwarte doos opengetrokken en ga ik kijken naar de binnenkant van de AI. Zoals ik reeds zei komen hierin geen stukken code, maar eerder de concepten binnen de AI.
+\item[Resultaten] \hfill \\ Dit deel beschrijft de resultaten. Hierin komt ook aan bod dat het algoritme in het algmeen goed werkt, maar dat de LiDAR-sensor gevoelig is aan de soort reflectie (zwarte voorwerpen hebben minder reflectie) en dat er daardoor veel afstelwerk vereist was. Dit komt ook aan bod in “further research”.
 
-Ook kunnen hier designkeuzes naar voren komen, zoals welk framework ik heb gekozen en waarom. 
+\end{description}
 
-\section{Results}
-In dit deel komen de resultaten naar boven van mijn masterproef. Hierin vertel ik hoe het autonoom rijden zijn werk doet en wat ik ermee behaald heb. Zo kan ik vertellen over de parcoursen die de auto heeft afgelegd en hoe de wagen dit tot een einde heeft gebracht. 
+\subsection{Optimisation Algorithm}
+\begin{description}
+\item[Literature] \hfill \\ Ik leg verschillende algoritmes naast elkaar en maak een kleine vergelijkende studie. Ik leg ook uit waarom ik een bepaald algoritme heb gekozen.
 
-\section{Further Research}
-Dit deel handelt over het onderzoek dat nog verricht moet worden om een volledig autonome auto te verkrijgen. Dit kan gaan van objectdetectie met de LiDAR-sensor tot interactie met andere wagens met oog op racen.
+\item[Concept] \hfill \\ Het gekozen algoritme wordt in meer in detail besproken.
+
+\item[Resultaten] \hfill \\ De resultaten van dit algoritme wordt besproken.
+
+\end{description}
+
+\section{Comparative study}
+De hierboven voorgelegde approaches worden met elkaar vergeleken en er worden verschillende toepassingen opgesomd waarin elk algoritme faalt of uitblinkt.
 
 \section{Conclusion}
-De conclusie van dit thesis wordt hierin verwerkt. Wat er exact in zal komen, weet ik nog niet precies. Ten eerste kan er iets gezegd worden over de voorbereidingen die getroffen moesten worden vooraleer de AI zijn werk kon doen. Als tweede kan er verteld worden over de AI zelf en hoe deze opgelost is, en of dit een goeie oplossing bleek te zijn. Als laatste kan er iets in komen over het verdere onderzoek dat nog moet gebeuren. 
+De conclusie wordt gemaakt.
+
+\section{Further Research}
+In dit deel wordt kort besproken wat er allemaal nog gedaan kan worden van research. Er kan bijvoorbeeld gekeken naar worden optimalisaties voor de Navigation Stack en meer specifiek voor Ackermannsteering. Ook kan er gekeken worden naar betere herkenning van hoeken en inhammen voor het tweede algoritme. Als laatste zouden er betere optimalisatie-algoritmes onderzocht kunnen worden, en met of zonder neural network.
+
+\section{References}
+
 % trigger a \newpage just before the given reference
 % number - used to balance the columns on the last page
 % adjust value as needed - may need to be readjusted if

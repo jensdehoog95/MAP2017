@@ -127,12 +127,12 @@
 % *** GRAPHICS RELATED PACKAGES ***
 %
 \ifCLASSINFOpdf
-  % \usepackage[pdftex]{graphicx}
+   \usepackage[pdftex]{graphicx}
   % declare the path(s) where your graphic files are
-  % \graphicspath{{../pdf/}{../jpeg/}}
+   \graphicspath{{figures/}}%{../jpeg/}}
   % and their extensions so you won't have to specify these with
   % every instance of \includegraphics
-  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+   \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
 \else
   % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
   % will default to the driver specified in the system graphics.cfg if no
@@ -194,6 +194,7 @@
 
 % *** SPECIALIZED LIST PACKAGES ***
 %
+\usepackage{algorithm}
 \usepackage{algorithmic}
 % algorithmic.sty was written by Peter Williams and Rogerio Brito.
 % This package provides an algorithmic environment fo describing algorithms.
@@ -264,7 +265,8 @@
 % subfigure.sty has been superceeded by subfig.sty.
 
 
-
+%\usepackage{graphicx}
+%\graphicspath{{figures/}}
 %\usepackage[caption=false]{caption}
 %\usepackage[font=footnotesize]{subfig}
 % subfig.sty, also written by Steven Douglas Cochran, is the modern
@@ -334,6 +336,8 @@
 % Advanced table environment
 \usepackage{booktabs}
 
+\usepackage{lipsum}
+
 
 
 % *** Do not adjust lengths that control margins, column widths, etc. ***
@@ -352,7 +356,7 @@
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
 %\title{Survey paper: \\Artificial Intelligence for optimisation of HVAC-systems}
-\title{Autonomous F1/10-car using Artificial Intelligence }
+\title{The Development and Comparison of Algorithms towards an Autonomous F1/10-Car}
 
 
 % author names and affiliations
@@ -381,13 +385,14 @@
 \author{
 \IEEEauthorblockN{Jens de Hoog\IEEEauthorrefmark{1},
 		Thomas Huybrechts\IEEEauthorrefmark{1}\IEEEauthorrefmark{4},
+		Ben Bellekens\IEEEauthorrefmark{1}\IEEEauthorrefmark{4},
 		Peter Hellinckx\IEEEauthorrefmark{1}\IEEEauthorrefmark{4}\\
-	jens.dehoog@student.uantwerpen.be, thomas.huybrechts@uantwerpen.be, peter.hellinckx@uantwerpen.be}
+	jens.dehoog@student.uantwerpen.be, thomas.huybrechts@uantwerpen.be,\\ ben.bellekens@uantwerpen.be, peter.hellinckx@uantwerpen.be}
 	\\\IEEEauthorblockA{
-	    \IEEEauthorrefmark{1}Department of Applied Engineering, Electronics-ICT, University of Antwerp, Belgium
+	    \IEEEauthorrefmark{1}Faculty of Applied Engineering, Electronics-ICT, University of Antwerp, Belgium
 	}
 	\IEEEauthorblockA{
-	    \IEEEauthorrefmark{4}IDLab, Department of Applied Engineering, University of Antwerp - iMinds, Belgium
+	    \IEEEauthorrefmark{4}University of Antwerp - imec, IDLab, Faculty of Applied Engineering, Belgium
 	}
 }
 
@@ -396,7 +401,7 @@
 
 \begin{abstract}
 %\boldmath
-Insert abstract of the paper.
+\lipsum[1]
 
 \end{abstract}
 % IEEEtran.cls defaults to using nonbold math in the Abstract.
@@ -421,68 +426,173 @@ Insert abstract of the paper.
 
 
 \section{Introduction}
-Despite the fact that artificial intelligence (AI) is not a new concept, it has become increasingly popular these days. Its first goal was to let machines replicate the intelligence of a human being, but that goal appeared to be more difficult than researches thought it would be. Slow progress was made for the next years, but technology has become more powerful and the interest in AI increased again, especially in marketable aspects\cite{Brooks1991}. At present, AI is quite ubiquitous and is implemented in many topics, such as self-driving cars. \\
+%Despite the fact that artificial intelligence (AI) is not a new concept, it has become increasingly popular these days. Its first goal was to let machines replicate the intelligence of a human being, but that goal appeared to be more difficult than researches thought it would be. Slow progress was made for the next years, but technology has become more powerful and the interest in AI increased again, especially in marketable aspects\cite{Brooks1991}. At present, AI is quite ubiquitous and is implemented in many topics, such as self-driving cars. \\
 
-*Moet nog uitgebreid worden*
+%*Moet nog uitgebreid worden*
 
-\section{Prerequisites}
+%\lipsum[2-4]
+
+%\section{**Testopstelling¨**}
 %\subsection{F1/10-car}
-%The F1/10-car consists of multiple sensors such as
-The racecar was built using the online tutorials provided by the organisation, f1tenth.org. Although these tutorials are made for using the car on a race circuit, certain prerequisites have to be made. 
+%Ik vertel over de wagen in het algemeen en welke sensoren eropzitten. Dit gebeurt heel kort.
+%Ook vertel ik over de globale structuur van ROS en welke belangrijke nodes er gebruikt worden.
+%
+%\subsection{Prerequisites}
+%In dit deel vertel ik over het traag rijden en het rijden tegen constante snelheid.
+%\begin{itemize}
+%\item Slow accurate driving: er wordt een beetje aandacht besteedt aan de twee approaches en waarom ze wel/niet werkten
+%\item Ik vertel kort waarom het rijden op softwareniveau (met IMU) niet werkten en hoe het met de RPM-sensor is opgelost.
+%\end{itemize}
 
-\subsection{Slow Accurate Driving}
-%Hierin leg ik uit hoe het systeem om traag te rijden is gevorderd. Eerst gaat het over de ontwikkeling van de zogenaamde PWM-ception. Dit onderdeel krijgt natuurlijk een andere en deftigere naam. Ook komen hierin de problemen aan bod die ik heb ondervonden met het PWM-signaal. Dit omvat onder andere de Teensy die gaan lage frequenties met hoge dutycycles kan opwekken, of de ESC die geen hoge frequenties met lage dutycycles accepteert.
+The original intent of the F1/10-car was to develop an autonomous race car which would compete against other cars, each with other algorithms. The University of Pennsylvania \cite{f1tenth} published multiple tutorials, lessons and exercises in order to set up an F1/10-car from the very beginning. Additionally, the university proposes several algorithms which can be used to drive on a race track. Though, these algorithms are optimised for racing on fixed tracks at high speeds. 
 
-%Het systeem is ge\"{e}volueerd naar het systeem met de tellers en ticks. Ook dit systeem zal in beperkte mate uitgelegd worden.
+\section{Algorithms}
+\subsection{Global outline}
+ 
+In order to navigate in a particular environment, multiple methods of navigation exist. In this paper, three approaches are discussed. A small literature study is made for each approach, along with an explanation of the algorithm itself and a discussion of the obtained results.
 
-First, the car cannot drive slowly with the current configuration, which is a challenge when debugging and testing software on the NVIDIA Jetson. Therefore, a solution has to be found. 
+In the first method, the car drives on a fixed trajectory which was calculated in advance. The second approach deals with waypoints. Thus, the car has to drive along these points in order to reach the destination. It is worth noting that no path is calculated between the waypoints. Otherwise, the first method is approached. Only a destination is given in the third and last process such that the car has to find the destination itself. 
 
-\subsubsection{Background}The Teensy microcontroller provides the signals for the steering servo and the Electronic Speed Control or ESC. These signals are independent square waves with a particular duty cycle, which ranges from 10\% to 20\% with 15\% as neutral value. When applying the neutral signals on both ESC and steering servo, the car does not move. The duty cycle of 10\% corresponds to steering to the left or driving backwards at full speed, whereas a value of 20\% corresponds to steering right or driving forward at maximum speed.
+\subsection{Fixed path}
+%\begin{description}
+%\item[Literature] \hfill \\ In dit deel leg ik verschillende globale algoritmes naast elkaar. Ook vertel ik dat de Navigation Stack aanwezig is in ROS en dat deze daa
 
-The numeric values used in the code for generating the PWM-signals are represented by a 16-bit integer. Thus, a duty cycle of 10\% accords to $\pm 6554$ and 20\% corresponds with $\pm 13108$. One can find that the matching value of 15\% is $\pm 9831$.
+%\item[Navigation Stack] \hfill \\ Hierin vertel ik dat er een implementatie bestaat in het ROS-framework, hoe deze is opgebouwd (subnodes, lokale / globale planner, AMCL, \ldots), wat er is foutgelopen bij het opzetten van de Stack en wat de oplossingen daarvoor waren. Ook vertelt dit deel over het feit dat de Stack in principe gemaakt is voor een differenti\"{e}le of holonomische sturing. Oplossingen worden daarvoor aangereikt, samen met de uitleg waarom die oplossingen goed/slecht waren.
+%Het ‘foutgelopen+oplossingen’-deel is beknopt. De oplossingen worden aangereikt in een korte maar duidelijke manier. 
 
-\subsubsection{Problem}A problem arises when the ESC-signal has a duty cycle which is a fraction higher than the neutral value. The motor does not drive instantly. Only at a particular numeric value of 10120 or at a duty cycle of 15.44189\%, the car starts driving at walking speed. Though, this speed is too fast when developing and debugging software. Hence, a certain deadzone exists between duty cycles 15\% and 15.44189\% which cannot be filled in by the hardware components. A software approach is needed in order to drive more slowly.
+%\item[Resultaten] \hfill \\ Dit deel vertelt over het verloop van het navigeren d.m.v. de Stack. Er komen foto’s aan bod van het uitgestippelde pad, de auto die tegen de muur zit, \ldots
 
-\subsubsection{Solution} The general approach is to modulate the ESC-signal. More specifically, by switching the ESC on and off at a particular frequency, the speed can be regulated. 
+%\end{description}
+In the state-of-the-art, considerable research has been done in planning a particular route and navigating on that route. Henson et al. \cite{Henson2008} propose an algorithm which processes waypoint instructions by calculating a route between each point. This algorithm is optimised for cars with an Ackermann-steering mechanism. Thus, if the waypoint is reached but without the requested orientation, the car starts to manoeuvre until the positioning is correct. 
 
-The first concept dealt with a PWM-signal which would modulate the ESC-signal. The motor controller was turned on and off using the generated square wave. By varying the duty cycle of that wave, the active time of the ESC varied with it.
-%The generated square wave represented the switching behaviour and by varying the duty cycle of that square wave, the active time of the ESC varies with it. %%% Nakijken %%% 
-This approach was implemented by using the built-in timers of the Teensy development board.
-Paul Stoffregen built a library which carries out the timer functions. This library is a fork of the original library for Arduino and implements multiple optimisations, along with support for more hardware configurations.
-%%% NAKIJKEN %%%
+Theodosis \cite{Theodosis2014} suggests multiple methods, all of which use waypoints. These checkpoints are connected with racing lines such that a car-like robot can easily navigate without impossible pivot points. 
 
+In the ROS-framework, a complete navigator package is available, which is also known as the \emph{Navigation Stack}. This module calculates a path and velocity commands based on given information, such as odometry and data from rangefinders. A major drawback of this navigator is the fact that it is created for robots with holonomic and differential steering mechanisms. Though, it is usable for car-like robots as there exist implementations for Ackermann-steering mechanisms.
 
-\subsection{Driving at constant speed}
-Het is een handigheid om op een hoger abstractieniveau "Ik wil 5km/u rijden" te kunnen zeggen. Dit komt vooral van pas bij de artificiële intelligentie. Daarom moet er een systeem gebouwd worden dat het rijden tegen constante snelheid voorziet. Dat systeem wordt in dit deel uitgelegd. De lezer ontdekt welke technieken ik heb geprobeerd en welke uiteindelijk gekozen is.
+For this research, the navigation stack has been implemented. It is easy to set up on the F1/10-car as the software on the car is already running a ROS-environment.
+The module is realised using multiple nodes and packages. One of these nodes is the \emph{move\textunderscore base}-node, which has a major role in the system. This node provides the linkage between the global and local planning algorithms that are used to calculate a path from the start location to the destination. Other nodes outside the package provide the inputs and outputs of the \emph{move\textunderscore base}-node. The needed inputs are the odometry data, transformations, localisation information, the map on which the navigation would take place and the data from a certain rangefinder. In our setup, a LiDAR-sensor (Light Detection and Ranging) serves as rangefinder. The commands by which the car would drive, are the generated outputs of the central navigation node. Figure \ref{fig:navstack_global} shows an overall overview of the different nodes in the navigation stack \cite{Marder-Eppstein2016}. 
 
-\subsection{Calculations}
-Hierin vertel ik welke berekeningen gemaakt moeten worden om proper te kunnen rijden. Mooie voorbeelden zijn het throttlen en sturen voor het rijden op de ideale racelijn.
+Inside the \textit{move\textunderscore base}-node, multiple calculations take place in order to navigate. First, a plugin called \emph{global\textunderscore costmap} produces a costmap, which is used to plan the route from start to destination. This is done by the plugin \emph{global\textunderscore planner}. The default implementation of this planner is \emph{navfn}. In our implementation, we opted for the more advanced planner \emph{global\textunderscore planner} because of the ability to customise multiple parameters. Second, the central node produces a local costmap which is used by the local planner. By using this particular costmap and planner, the navigation stack is able to plan a route around an unexpected obstacle that is not present on the map. The default local planner is \emph{base\textunderscore local\textunderscore planner}. Though, an other implementation is available for car-like robots. This planner is known as \emph{teb\textunderscore local\textunderscore planner}\cite{Rosmann2016}.  As a safety feature, the \emph{move\textunderscore base}-node includes a recovery plugin which plans a secondary route when the car is stuck and thus unable to follow the planned route.
+Figure \ref{fig:navstack_global} shows an abstract overview of the navigation stack with its nodes and plugins \cite{Marder-Eppstein2016_2, Zheng2016}.
+\begin{figure}[!t]
+    \includegraphics[width=\columnwidth]{navstack3}
+    \centering
+    \caption{Overview of the navigation stack with its input and output nodes, along with the plugins inside the \emph{move\textunderscore base}-node \cite{Marder-Eppstein2016}.}
+    \label{fig:navstack_global}
+\end{figure}
 
-\section{Artificial Intelligence}
-\subsection{Introduction and definitions}
-%\subsubsection{Definitions}
-The subject 'Artificial Intelligence' has many definitions, but Davis preferred this one: "There are a number of cognitive tasks that people do easily---often, indeed, with no consciousthought at all---but that it is extremely hard to program on computers. Artificial intelligence, as I define it, is the study of getting computers to carry out these tasks."\cite{Davis2014} Copeland stated another definition: "Artificial Intelligence is usually defined as the science of making computers do things that require intelligence when done by humans." \cite{Cop2000}\\
+Before the car is able to drive using the navigation stack, one has to make sure a map of the environment is present. The map used in this research is built by using \emph{hector\textunderscore mapping}. This package is an implementation of the SLAM-methodology (Simultaneous Localisation And Mapping), which only uses data from the LiDAR-sensor. Therefore, this is the most suitable implementation for our F1/10-car due to the lack of odometry data. An elaborated discussion on \emph{hector\textunderscore mapping} can be found in \cite{Kohlbrecher2011} and \cite{Kohlbrecher2012}. 
 
-According to the research of Tk{\'{a}}{\v{c}} et al.\cite{Tkac2015}, artificial neural networks are structures which were built to match the aggregation of knowledge in a human nerve system. These artificial structures can solve non-linear problems which are extremely hard to solve by a conventional computational structure. Because of the flexibility, sturdiness and efficiency, these artificial neural networks are gaining popularity in different sorts of applications such as pattern recognition systems and financial utilisations.\cite{yegnanarayana2009artificial,Tkac2015}\\
+In order to use the \emph{move\textunderscore base}-node properly, certain precautions have to be made. First, the transformation tree has to be correct such that the laser data can be transformed to the center of the robot. To build such a tree, two \emph{tf}-nodes are created. The first node transforms the LiDAR-data to a link that connects all types of sensors. The second node transforms the linking point to the center of the frame. Since only one sensor is present, we locate the linking point to the center of the frame; thus, the second transformation is one-to-one. Though, this second transform is needed as the navigation stack needs the \emph{base\textunderscore frame}-transformation \cite{Kohlbrecher2012_tf} \cite{Woodall2015}.
 
-*Kan nog uitgebreid worden*
+Second, the navigation stack needs a source of odometry data. Since the car does not feature a suitable source, we have to generate such data from the LiDAR-sensor. \emph{Hector\textunderscore mapping} has the ability to provide odometry data which is derived from the laser scan. In order to use this data in the navigation stack, a particular node is needed which translates the odometry information to transformation data. The implementation of this node is available on the \emph{f1tenth}-repository of Nischal K.N. \cite{K.N.2016}.
 
-\subsection{Applied on F1/10-car}
-In dit deel praat ik over hoe AI in mijn systeem is ge\"{i}ntegreerd en hoe het concept in z'n werking gaat. Hoe de sensoren, ROS en de AI samenwerken, wordt hier uitgelegd met behulp van blokschema's en flowcharts. 
+Third, the robot must be able to guess its location on the given map. This is implemented by the \emph{AMCL}-node (\emph{Adaptive Monte Carlo Localisation}). In order to generate a suitable pose guess, the node also needs odometry data, along with the map, transformations and LiDAR-information \cite{Gerkey2016} \cite{Thrun1999}. The pose guess is relative to the given map; thus, this node provides the transformation between the odometry and the map.\\
+Final, the translation from the velocity commands of the navigator to instructions for the motor controller needs to be made.
+Figure \ref{fig:navstack_tf} shows the transformations created by the aforementioned nodes. 
 
-\subsection{Implementation}
-Dit onderdeel handelt over de exacte implementatie, zonder stukken code te laten zien. Hier vertel ik over hoe het gekozen framework (bijvoorbeeld TensorFlow) in elkaar gestoken is. Het verschil met de vorige paragraaf is dat daar de AI gezien wordt als een zwarte doos die verbonden wordt met andere onderdelen. In dit deel wordt die zwarte doos opengetrokken en ga ik kijken naar de binnenkant van de AI. Zoals ik reeds zei komen hierin geen stukken code, maar eerder de concepten binnen de AI.
+\begin{figure}[!t]
+    \includegraphics[width=\columnwidth]{navstack_tf}
+    \centering
+    \caption{Created transformation frames for the navigation stack. The \emph{tf}-links between \emph{laser}, \emph{base\textunderscore link} and \emph{base\textunderscore frame} are static transforms. Next, the \emph{hector\textunderscore odom}-link is created by a node which translates the odometry of \emph{hector\textunderscore mapping}. The \emph{amcl}-transform is created by the localisation provider.}
+    \label{fig:navstack_tf}
+\end{figure}
 
-Ook kunnen hier designkeuzes naar voren komen, zoals welk framework ik heb gekozen en waarom. 
+\begin{figure}[!t]
+	\includegraphics[width=\columnwidth]{navstack_result_1}
+	\centering
+	\caption{a) shows the route which is planned by the navigation stack. The map is built with \emph{hector\textunderscore mapping}\cite{Kohlbrecher2012}. b) illustrates a close-up of the car moving on the route. }
+	\label{fig:navstack_result}
+\end{figure}
 
-\section{Results}
-In dit deel komen de resultaten naar boven van mijn masterproef. Hierin vertel ik hoe het autonoom rijden zijn werk doet en wat ik ermee behaald heb. Zo kan ik vertellen over de parcoursen die de auto heeft afgelegd en hoe de wagen dit tot een einde heeft gebracht. 
+As a result, the planned route is shown in figure \ref{fig:navstack_result}, along with a close-up of the car navigating on that path. 
 
-\section{Further Research}
-Dit deel handelt over het onderzoek dat nog verricht moet worden om een volledig autonome auto te verkrijgen. Dit kan gaan van objectdetectie met de LiDAR-sensor tot interactie met andere wagens met oog op racen.
+A major drawback of the navigation stack is its lack of optimisation for car-like robots. Instead, it is especially created for robots with holonomic or differential steering mechanisms. Therefore, the car is sometimes unable to follow the calculated path. Because of this problem, we implemented \emph{teb\textunderscore local\textunderscore planner} such that the route would be more optimised for Ackermann-steering. It appeared that this planner needed a a lot of computing power. The onboard NVIDIA Jetson TK1 was unable to finish the calculations before the requested deadlines. Even a virtual machine with high specifications could not finish the process. Therefore, the default local planner is used for further usage. Although using this planner could result in pivot points and sharp curves, the car is perfectly able to navigate on the trajectory if the curves are almost straight and without turning points.
+Another drawback is the low driving speed at which the car has to drive in order to update its position. By increasing speed, a certain latency exists between the actual position and the calculated one. As a result, the navigation stack is too slow with processing a new local path and crashes could occur.
+%Using this planner results in pivot points and curves; thus the car is unable to follow those parts of the path. 
+
+\subsection{Waypoints}
+%\begin{description}
+%\item[Literature] \hfill \\ In dit deel komen verschillende algoritmes naar boven die in de literatuur te vinden zijn. Ook wordt er gezegd waarom deze algoritmes niet goed genoeg zijn voor mijn doel en dat ik daarom zelf een algoritme heb ontwikkeld.
+%
+%\item[Concept] \hfill \\ Deze paragraaf legt het algoritme uit, samen met alle edge cases (wat als een muur wegvalt, wat als ik een kruispunt tegenkom, \ldots).
+%
+%\item[Resultaten] \hfill \\ Dit deel beschrijft de resultaten. Hierin komt ook aan bod dat het algoritme in het algmeen goed werkt, maar dat de LiDAR-sensor gevoelig is aan de soort reflectie (zwarte voorwerpen hebben minder reflectie) en dat er daardoor veel afstelwerk vereist was. Dit komt ook aan bod in “further research”.
+%
+%\end{description}
+
+In the current state-of-the-art, many navigation algorithms process waypoints in order to reach the destination. E.g., the aforementioned algorithms \cite{Henson2008}\cite{Theodosis2014} use waypoints to describe the route, but the paths between those points are still calculated; thus these algorithms are suitable for the fixed path approach mentioned in the previous section. Due to the lack of research for this problem, no acceptable solutions are available yet. Therefore, this paper suggests a new methodology to tackle this problem.
+
+%Before we shed light on the actual algorithm, a few notes have to be made. First, 
+%The algorithm is similar to \emph{turn-by-turn}-navigation used in GPS-systems. 
+In the algorithm, a waypoint is similar to an instruction of  \emph{turn-by-turn}-based navigation. A waypoint consists of two datafields: \emph{direction} and \emph{count}.
+The \emph{direction}-field has three possible options: \emph{straigt}, \emph{left} and \emph{right}. The \emph{count}-variable describes which turn should be taken. Figure \ref{fig:waypoints_turns} shows two examples. In the first case, the waypoint is described as $(\text{\emph{right}},\,2)$. I.e., the car should take the second exit on the right. The instruction of the second example is described as $(\text{\emph{left}},\,3)$. 
+
+\begin{figure}[!t]
+	\includegraphics[width=\columnwidth]{waypoints_turns}
+	\centering
+	\caption{a) illustrates a waypoint which is described as $(\text{\emph{right}},\,2)$. b) shows the instruction $(\text{\emph{left}},\,3)$. }
+	\label{fig:waypoints_turns}
+\end{figure}
+
+The actual implementation of the algorithm is done by B. Smits and S. Maes for their bachelor's thesis, but first, a few prerequisites have to be made. We have to make sure the car drives in the middle of the road in order to drive in a hallway. Smits and Maes implemented multiple ROS-nodes which adjust the wheel position of the car by given LiDAR-data, thus regulating the distance with respect to the wall while driving. 
+
+With this ROS-nodes, the implementation of the algorithm takes place. When the car is driving and it detects a corner on one of its sides, the software checks if this is the corner that is specified by the waypoint instruction. If false, the car continues driving while focusing on the opposite wall, such that the car stays in the middle of the road. If the result is true, the car will take the turn by adjusting the wheel position until the car is parallel with the wall of the corner. If the software detects corners on both of its sides, but neither of them is specified by the waypoint, the steering position is set to neutral. Therefore, the car drives straight until a wall on either side is detected. Thus, the aforementioned ROS-nodes can be resumed.
+
+%\begin{algorithm}
+%	\caption{Waypoint Navigation}
+%	\label{alg:waypoint_navigation}
+%\begin{algorithmic}
+%    \STATE $Waypoint \leftarrow (direction, count)$
+%	\STATE Fill list $Waypoint[]$
+%\end{algorithmic}
+%\begin{algorithmic}[1]
+%	\REQUIRE $Waypoint[]$
+%	\WHILE{list $Waypoint[]$ is not empty}
+%	\STATE $point \leftarrow \text{Read element from} Waypoint[]$
+%	\STATE 
+%	\ENDWHILE
+%\end{algorithmic}
+%\end{algorithm}
+%As mentioned in the paragraph \emph{Literature} of previous section, multiple navigation algorithms using waypoints are already developed. Though, paths are still calculated between those waypoints. Thus, the previous section is approached by these algorithms. 
+
+\paragraph{Concept}
+%\begin{algorithmic}[1]
+%	\WHILE{list of waypoints is not $0$}
+%	\STATE carry out some processing
+%	\ENDWHILE
+%\end{algorithmic}
+
+\subsection{Optimisation Algorithm}
+\begin{description}
+\item[Literature] \hfill \\ Ik leg verschillende algoritmes naast elkaar en maak een kleine vergelijkende studie. Ik leg ook uit waarom ik een bepaald algoritme heb gekozen.
+
+\item[Concept] \hfill \\ Het gekozen algoritme wordt in meer in detail besproken.
+
+\item[Resultaten] \hfill \\ De resultaten van dit algoritme wordt besproken.
+
+\end{description}
+
+\section{Comparative study}
+De hierboven voorgelegde approaches worden met elkaar vergeleken en er worden verschillende toepassingen opgesomd waarin elk algoritme faalt of uitblinkt.
+
+\section{Test setup}
+\subsection{F1/10-car}
+Ik vertel over de wagen in het algemeen en welke sensoren eropzitten. Dit gebeurt heel kort.
+Ook vertel ik over de globale structuur van ROS en welke belangrijke nodes er gebruikt worden.
+
+\subsection{Prerequisites}
+In dit deel vertel ik over het traag rijden en het rijden tegen constante snelheid.
+\begin{itemize}
+\item Slow accurate driving: er wordt een beetje aandacht besteedt aan de twee approaches en waarom ze wel/niet werkten
+\item Ik vertel kort waarom het rijden op softwareniveau (met IMU) niet werkten en hoe het met de RPM-sensor is opgelost.
+\end{itemize}
 
 \section{Conclusion}
-De conclusie van dit thesis wordt hierin verwerkt. Wat er exact in zal komen, weet ik nog niet precies. Ten eerste kan er iets gezegd worden over de voorbereidingen die getroffen moesten worden vooraleer de AI zijn werk kon doen. Als tweede kan er verteld worden over de AI zelf en hoe deze opgelost is, en of dit een goeie oplossing bleek te zijn. Als laatste kan er iets in komen over het verdere onderzoek dat nog moet gebeuren. 
+De conclusie wordt gemaakt.
+
+\section{Further Research}
+In dit deel wordt kort besproken wat er allemaal nog gedaan kan worden van research. Er kan bijvoorbeeld gekeken naar worden optimalisaties voor de Navigation Stack en meer specifiek voor Ackermannsteering. Ook kan er gekeken worden naar betere herkenning van hoeken en inhammen voor het tweede algoritme. Als laatste zouden er betere optimalisatie-algoritmes onderzocht kunnen worden, en met of zonder neural network. 
 % trigger a \newpage just before the given reference
 % number - used to balance the columns on the last page
 % adjust value as needed - may need to be readjusted if
