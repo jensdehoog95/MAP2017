@@ -7,7 +7,7 @@
 
 <!-- Global arguments -->
   <arg name="map_name" default="zbuilding.yaml"/>
-  <arg name="speed" default="3.0"/>
+  <arg name="speed" default="0.0"/>
 
 <!-- Argument names for amcl parameters-->
   <arg name="use_map_topic"   default="true"/>
@@ -127,7 +127,7 @@
 
     <param name="controller_frequency" value="15"/>
     <!--<param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />-->
-    <param name="base_global_planner" value="global_planner/GlobalPlanner"/>
+    <!--<param name="base_global_planner" value="global_planner/GlobalPlanner"/>-->
 
     <!-- External parameters of move_base -->
 

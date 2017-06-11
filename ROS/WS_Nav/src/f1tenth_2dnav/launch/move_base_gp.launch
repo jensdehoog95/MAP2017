@@ -124,8 +124,8 @@
    
     <param name="controller_frequency" value="15"/>
     <!--<param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />-->
-    <!--<param name="base_global_planner" value="global_planner/GlobalPlanner"/>
-    <param name="global_planner/use_dijkstra" value="false"/>-->
+    <param name="base_global_planner" value="global_planner/GlobalPlanner"/>
+    <!--<param name="global_planner/use_dijkstra" value="false"/>-->
     <!-- External parameters of move_base -->
 
     <rosparam file="$(find f1tenth_2dnav)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
