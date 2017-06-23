@@ -20,7 +20,7 @@
   <arg name="scan_topic" default="updatedScan"/>
   <arg name="map_size" default="2048"/>
 
-  <arg name="map_name" default="living3.yaml"/>
+  <arg name="map_name" default="zbuilding.yaml"/>
   <arg name="speed" default="3.0"/>
 
 <!-- Uncomment in case of rosbag -->
