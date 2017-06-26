@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<launch>
+  
+  <!-- LiDAR, IMU and Teensy -->
+  <include file="$(find launchcar)/launch/car.launch"/>
+
+  <!-- Transformations for the navigation stack -->
+  <include file="$(find launchcar)/launch/tf_nav_sim.launch"/>
+
+  <node pkg="race" type="talker.py" name="talker" output="screen"/>
+  
+</launch>
